@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Grid, Input, Button } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 
 import loadApiDoc from "../api-loader/api-loader";
 
@@ -11,10 +11,16 @@ const Main: React.FC = () => {
   return (
     <Grid className="Main">
       <Grid.Row>
-        <Input ref={refInput} placeholder="Yaml API Collections..." />
+        <input
+          ref={refInput}
+          placeholder="Yaml API Collections..."
+          value="/Users/xueg/source/fun/postmate/fixtures/api1.yaml"
+          readOnly
+        />
         <Button
           onClick={async () => {
             const input = refInput.current;
+            console.log(input);
             const fileLocation = (input || { value: "" }).value;
             const newDoc = await loadApiDoc(fileLocation);
             setDoc(newDoc);
