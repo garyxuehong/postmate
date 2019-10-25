@@ -13,3 +13,7 @@ export class ApiRequest {
   name: string = "";
   url: string = "";
 }
+
+export class RequestSendResponse {
+  body: string = "";
+}

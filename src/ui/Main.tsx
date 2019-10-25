@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { Grid, Button, Accordion, List } from "semantic-ui-react";
 
 import loadApiDoc from "../api-loader/api-loader";
+import sendRequest from "../request-sender/request-sender";
 
-import { ApiDoc, ApiRequest } from "../model/model";
+import { ApiDoc, ApiRequest, RequestSendResponse } from "../model/model";
 
 const DEMO_API = "/Users/xueg/source/fun/postmate/fixtures/api1.yaml";
 
@@ -11,6 +12,10 @@ const Main: React.FC = () => {
   const refInput = useRef(null);
   const [doc, setDoc] = useState<ApiDoc>(new ApiDoc());
   const [activeRequest, setActiveRequest] = useState<ApiRequest | null>(null);
+  const [
+    activeResponse,
+    setActiveResponse
+  ] = useState<RequestSendResponse | null>(null);
   useEffect(() => {
     async function load() {
       const newDoc = await loadApiDoc(DEMO_API);
@@ -69,10 +74,25 @@ const Main: React.FC = () => {
         </Grid.Column>
         <Grid.Column width={8}>
           <div>main panel</div>
+          <div>
+            <Button
+              onClick={async () => {
+                if (activeRequest === null) return;
+                const resp = await sendRequest(activeRequest);
+                setActiveResponse(resp);
+              }}
+            >
+              Send
+            </Button>
+          </div>
           <div>{JSON.stringify(activeRequest)}</div>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row></Grid.Row>
+      <Grid.Row>
+        <pre>
+          <pre>{JSON.stringify(activeResponse, undefined, "\t")}</pre>
+        </pre>
+      </Grid.Row>
       <Grid.Row>
         <pre>{JSON.stringify(doc, undefined, "\t")}</pre>
       </Grid.Row>
