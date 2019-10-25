@@ -5,9 +5,9 @@
   "main": "public/electron.js",
   "homepage": "./",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "rescripts start",
+    "build": "rescripts build",
+    "test": "rescripts test",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "yarn build",
@@ -25,10 +25,7 @@
     "mac": {
       "category": "public.app-category.utilities"
     },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
+    "files": ["build/**/*", "node_modules/**/*"],
     "directories": {
       "buildResources": "assets"
     }
@@ -37,12 +34,8 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [
-      "last 1 chrome version"
-    ],
-    "development": [
-      "last 1 chrome version"
-    ]
+    "production": ["last 1 chrome version"],
+    "development": ["last 1 chrome version"]
   },
   "dependencies": {
     "@types/jest": "24.0.19",
