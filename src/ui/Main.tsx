@@ -1,13 +1,23 @@
-import React, { useState, useRef } from "react";
-import { Grid, Button } from "semantic-ui-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Grid, Button, Accordion, List } from "semantic-ui-react";
 
 import loadApiDoc from "../api-loader/api-loader";
 
-import { ApiDoc } from "../model/model";
+import { ApiDoc, ApiRequest } from "../model/model";
+
+const DEMO_API = "/Users/xueg/source/fun/postmate/fixtures/api1.yaml";
 
 const Main: React.FC = () => {
   const refInput = useRef(null);
-  const [doc, setDoc] = useState<ApiDoc | null>(null);
+  const [doc, setDoc] = useState<ApiDoc>(new ApiDoc());
+  const [activeRequest, setActiveRequest] = useState<ApiRequest | null>(null);
+  useEffect(() => {
+    async function load() {
+      const newDoc = await loadApiDoc(DEMO_API);
+      setDoc(newDoc);
+    }
+    load();
+  }, []);
   return (
     <Grid className="Main">
       <Grid.Row>
@@ -20,7 +30,6 @@ const Main: React.FC = () => {
         <Button
           onClick={async () => {
             const input = refInput.current;
-            console.log(input);
             const fileLocation = (input || { value: "" }).value;
             const newDoc = await loadApiDoc(fileLocation);
             setDoc(newDoc);
@@ -31,12 +40,39 @@ const Main: React.FC = () => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width={4}>
-          <div>hello</div>
+          <div>
+            <h1>{doc.name}</h1>
+          </div>
+          <div>
+            <Accordion>
+              {doc.collections.map(col => (
+                <>
+                  <Accordion.Title>{col.name}</Accordion.Title>
+                  <Accordion.Content active={true}>
+                    <List>
+                      {col.requests.map(req => (
+                        <List.Item
+                          description={req.url}
+                          onClick={() => {
+                            setActiveRequest(req);
+                          }}
+                        >
+                          {req.name}
+                        </List.Item>
+                      ))}
+                    </List>
+                  </Accordion.Content>
+                </>
+              ))}
+            </Accordion>
+          </div>
         </Grid.Column>
         <Grid.Column width={8}>
           <div>main panel</div>
+          <div>{JSON.stringify(activeRequest)}</div>
         </Grid.Column>
       </Grid.Row>
+      <Grid.Row></Grid.Row>
       <Grid.Row>
         <pre>{JSON.stringify(doc, undefined, "\t")}</pre>
       </Grid.Row>
