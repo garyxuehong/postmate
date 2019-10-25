@@ -5,13 +5,13 @@
   "main": "public/electron.js",
   "homepage": "./",
   "scripts": {
-    "start": "rescripts start",
-    "build": "rescripts build",
+    "js-start": "rescripts start",
+    "js-build": "rescripts build",
     "test": "rescripts test",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "concurrently \"BROWSER=none yarn js-start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
-    "preelectron-pack": "yarn build",
-    "electron-pack": "electron-builder -m"
+    "preelectron-pack": "yarn js-build",
+    "build": "electron-builder -m"
   },
   "author": {
     "name": "Gary Xue",
@@ -25,7 +25,10 @@
     "mac": {
       "category": "public.app-category.utilities"
     },
-    "files": ["build/**/*", "node_modules/**/*"],
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
     "directories": {
       "buildResources": "assets"
     }
@@ -34,8 +37,12 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": ["last 1 chrome version"],
-    "development": ["last 1 chrome version"]
+    "production": [
+      "last 1 chrome version"
+    ],
+    "development": [
+      "last 1 chrome version"
+    ]
   },
   "dependencies": {
     "@types/jest": "24.0.19",
@@ -46,6 +53,8 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.1",
     "typescript": "3.6.4"
   },
   "devDependencies": {
