@@ -4,9 +4,9 @@ collections:
   - name: Invoice Gateway
     requests:
       - name: Invoice Headers
-        method: POST
+        method: GET
         url: |
-          https://www.google.com.au
+          https://www.reece.com.au/site/menu
         headers:
           content-type: application/json
           consumer-key: 12345

@@ -13,9 +13,11 @@ export class ApiRequest {
   name: string = "";
   method: "GET" | "POST" = "GET";
   url: string = "";
-  headers: { key: string; value: string }[] = [];
+  headers: { [index: string]: string } = {};
 }
 
 export class RequestSendResponse {
+  statusCode: number = 0;
+  headers: { [index: string]: string } = {};
   body: string = "";
 }

@@ -19,7 +19,7 @@ const RequestPanel: React.FC<{ request: ApiRequest | null }> = ({
         ([key, value]) => (
           <Form.Field>
             <label>{key}</label>
-            <input value={(value || '').toString()} />
+            <input value={value} />
           </Form.Field>
         )
       )}
