@@ -13,6 +13,7 @@ export class ApiRequest {
   name: string = "";
   method: "GET" | "POST" = "GET";
   url: string = "";
+  headers: { key: string; value: string }[] = [];
 }
 
 export class RequestSendResponse {

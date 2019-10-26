@@ -15,6 +15,14 @@ const RequestPanel: React.FC<{ request: ApiRequest | null }> = ({
         <label>url</label>
         <input value={request === null ? "" : request.url} />
       </Form.Field>
+      {(request === null ? [] : Object.entries(request.headers)).map(
+        ([key, value]) => (
+          <Form.Field>
+            <label>{key}</label>
+            <input value={(value || '').toString()} />
+          </Form.Field>
+        )
+      )}
     </Form>
   );
 };

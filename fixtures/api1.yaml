@@ -7,3 +7,6 @@ collections:
         method: POST
         url: |
           https://www.google.com.au
+        headers:
+          content-type: application/json
+          consumer-key: 12345
