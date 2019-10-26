@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { ApiDoc, ApiRequest, RequestSendResponse } from "../model/model";
+import React from "react";
+import { ApiRequest } from "../model/model";
 import { Form } from "semantic-ui-react";
 
 const RequestPanel: React.FC<{ request: ApiRequest | null }> = ({
@@ -9,17 +9,17 @@ const RequestPanel: React.FC<{ request: ApiRequest | null }> = ({
     <Form>
       <Form.Field>
         <label>method</label>
-        <input value={request === null ? "" : request.method} />
+        <input value={request === null ? "" : request.method} readOnly />
       </Form.Field>
       <Form.Field>
         <label>url</label>
-        <input value={request === null ? "" : request.url} />
+        <input value={request === null ? "" : request.url} readOnly />
       </Form.Field>
       {(request === null ? [] : Object.entries(request.headers)).map(
         ([key, value]) => (
-          <Form.Field>
+          <Form.Field key={key}>
             <label>{key}</label>
-            <input value={value} />
+            <input value={value} readOnly />
           </Form.Field>
         )
       )}
