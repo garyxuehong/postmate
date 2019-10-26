@@ -6,6 +6,8 @@ import sendRequest from "../request-sender/request-sender";
 
 import { ApiDoc, ApiRequest, RequestSendResponse } from "../model/model";
 
+import RequestPanel from "./RequestPanel";
+
 const DEMO_API = "/Users/xueg/source/fun/postmate/fixtures/api1.yaml";
 
 const Main: React.FC = () => {
@@ -85,7 +87,9 @@ const Main: React.FC = () => {
               Send
             </Button>
           </div>
-          <div>{JSON.stringify(activeRequest)}</div>
+          <div>
+            <RequestPanel request={activeRequest} />
+          </div>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>

@@ -4,5 +4,6 @@ collections:
   - name: Invoice Gateway
     requests:
       - name: Invoice Headers
+        method: POST
         url: |
           https://www.google.com.au

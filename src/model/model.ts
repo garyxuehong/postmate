@@ -11,6 +11,7 @@ export class ApiCollection {
 
 export class ApiRequest {
   name: string = "";
+  method: "GET" | "POST" = "GET";
   url: string = "";
 }
 
