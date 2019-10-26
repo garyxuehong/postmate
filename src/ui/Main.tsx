@@ -89,12 +89,12 @@ const Main: React.FC = () => {
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
-        <pre>
-          <pre>{JSON.stringify(activeResponse, undefined, "\t")}</pre>
-        </pre>
+        <div>
+          <div>{JSON.stringify(activeResponse, undefined, "\t")}</div>
+        </div>
       </Grid.Row>
       <Grid.Row>
-        <pre>{JSON.stringify(doc, undefined, "\t")}</pre>
+        <div>{JSON.stringify(doc, undefined, "\t")}</div>
       </Grid.Row>
     </Grid>
   );
