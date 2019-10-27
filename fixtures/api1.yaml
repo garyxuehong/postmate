@@ -1,9 +1,33 @@
-name: api 1
-author: gary
+name: Reececonnect API
 collections:
   - name: Invoice Gateway
     requests:
       - name: Invoice Headers
+        method: GET
+        url: |
+          https://www.reece.com.au/site/menu
+        headers:
+          content-type: application/json
+          consumer-key: 12345
+      - name: Invoice Detail
+        method: POST
+        url: |
+          https://www.reece.com.au/site/menu
+        headers:
+          content-type: application/json
+          consumer-key: 12345
+  - name: Order Gateway
+    requests:
+      - name: Creat Order
+        method: POST
+        url: |
+          https://www.reece.com.au/site/menu
+        headers:
+          content-type: application/json
+          consumer-key: 12345
+  - name: Product Gateway
+    requests:
+      - name: Product Search
         method: GET
         url: |
           https://www.reece.com.au/site/menu

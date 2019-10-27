@@ -1,6 +1,5 @@
 export class ApiDoc {
   name: string = "";
-  author: string | null = null;
   collections: ApiCollection[] = [];
 }
 

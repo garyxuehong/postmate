@@ -42,9 +42,6 @@ const Main: React.FC = () => {
           <RequestOperationPanel request={activeRequest} />
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row>
-        <div>{JSON.stringify(doc, undefined, "\t")}</div>
-      </Grid.Row>
     </Grid>
   );
 };
