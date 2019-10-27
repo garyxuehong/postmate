@@ -1,29 +1,34 @@
-import React, { useRef } from "react";
-import { Button } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Form } from "semantic-ui-react";
 
 export default function ApiLocation({
+  location,
   onSync
 }: {
+  location: string;
   onSync: (location: string) => void;
 }) {
-  const refInput = useRef(null);
+  const [tempLocation, updateTempLocation] = useState(location);
   return (
-    <div>
-      <input
-        width={1200}
-        ref={refInput}
-        placeholder="Yaml API Collections..."
-        readOnly
-      />
-      <Button
-        onClick={async () => {
-          const input = refInput.current;
-          const fileLocation = (input || { value: "" }).value;
-          onSync(fileLocation);
-        }}
-      >
-        Sync
-      </Button>
-    </div>
+    <Form>
+      <Form.Group>
+        <Form.Input
+          width={14}
+          placeholder="Yaml API Collections..."
+          value={tempLocation}
+          onChange={e => {
+            updateTempLocation(e.target.value);
+          }}
+        />
+        <Form.Button
+          width={2}
+          onClick={async () => {
+            onSync(tempLocation);
+          }}
+        >
+          Sync
+        </Form.Button>
+      </Form.Group>
+    </Form>
   );
 }

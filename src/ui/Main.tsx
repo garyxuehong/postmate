@@ -26,6 +26,7 @@ const Main: React.FC = () => {
       <Grid.Row>
         <Grid.Column width={16}>
           <ApiLocation
+            location={DEMO_API}
             onSync={async (location: string) => {
               const doc = await loadApiDoc(location);
               setDoc(doc);

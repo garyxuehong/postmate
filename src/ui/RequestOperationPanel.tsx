@@ -13,8 +13,8 @@ export default function RequestOperationPanel({
   const [response, setResponse] = useState<RequestSendResponse | null>(null);
   return (
     <div>
-      <div>main panel</div>
-      <div>
+      <h1>
+        Request
         <Button
           onClick={async () => {
             if (request === null) return;
@@ -24,7 +24,7 @@ export default function RequestOperationPanel({
         >
           Send
         </Button>
-      </div>
+      </h1>
       <div>
         <RequestPanel request={request} />
       </div>
