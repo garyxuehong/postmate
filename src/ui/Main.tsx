@@ -6,6 +6,7 @@ import sendRequest from "../request-sender/request-sender";
 
 import { ApiDoc, ApiRequest, RequestSendResponse } from "../model/model";
 
+import RequestList from "./RequestList";
 import RequestPanel from "./RequestPanel";
 import ResponsePanel from "./ResponsePanel";
 
@@ -51,32 +52,7 @@ const Main: React.FC = () => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width={4}>
-          <div>
-            <h1>{doc.name}</h1>
-          </div>
-          <div>
-            <Accordion>
-              {doc.collections.map(col => (
-                <div key={col.name}>
-                  <Accordion.Title>{col.name}</Accordion.Title>
-                  <Accordion.Content active={true}>
-                    <List>
-                      {col.requests.map(req => (
-                        <List.Item
-                          key={req.name}
-                          onClick={() => {
-                            setActiveRequest(req);
-                          }}
-                        >
-                          {req.name}
-                        </List.Item>
-                      ))}
-                    </List>
-                  </Accordion.Content>
-                </div>
-              ))}
-            </Accordion>
-          </div>
+          <RequestList doc={doc} onActivateRequest={setActiveRequest} />
         </Grid.Column>
         <Grid.Column width={12}>
           <div>main panel</div>
@@ -94,18 +70,10 @@ const Main: React.FC = () => {
           <div>
             <RequestPanel request={activeRequest} />
           </div>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width={4}></Grid.Column>
-        <Grid.Column width={12}>
           <h1>Response</h1>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width={4}></Grid.Column>
-        <Grid.Column width={12}>
-          <ResponsePanel response={activeResponse} />
+          <div>
+            <ResponsePanel response={activeResponse} />
+          </div>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
