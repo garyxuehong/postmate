@@ -8,18 +8,18 @@ const ResponsePanel: React.FC<{ response: RequestSendResponse | null }> = ({
   return (
     <Form>
       <Form.Field>
-        <label>status</label>
+        <label>Status</label>
         <input value={response === null ? "" : response.statusCode} readOnly />
       </Form.Field>
       <Form.Field>
-        <label>headers</label>
+        <label>Headers</label>
         <textarea
           value={response === null ? "" : JSON.stringify(response.headers)}
           readOnly
         />
       </Form.Field>
       <Form.Field>
-        <label>body</label>
+        <label>Body</label>
         <textarea value={response === null ? "" : response.body} readOnly />
       </Form.Field>
     </Form>

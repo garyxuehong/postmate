@@ -10,7 +10,7 @@ export class ApiCollection {
 
 export class ApiRequest {
   name: string = "";
-  method: "GET" | "POST" = "GET";
+  method: string = "GET";
   url: string = "";
   headers: { [index: string]: string } = {};
 }

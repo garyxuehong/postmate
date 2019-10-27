@@ -2,27 +2,37 @@ import React from "react";
 import { ApiRequest } from "../model/model";
 import { Form } from "semantic-ui-react";
 
-const RequestPanel: React.FC<{ request: ApiRequest | null }> = ({
-  request
-}) => {
+const RequestPanel: React.FC<{
+  request: ApiRequest;
+  onMethodChange: (value: string) => void;
+  onUrlChange: (value: string) => void;
+  onHeadersChange: (key: string, value: string) => void;
+}> = ({ request, onMethodChange, onUrlChange, onHeadersChange }) => {
   return (
     <Form>
       <Form.Field>
-        <label>method</label>
-        <input value={request === null ? "" : request.method} readOnly />
+        <label>Method</label>
+        <input
+          value={request.method}
+          onChange={e => onMethodChange(e.target.value)}
+        />
       </Form.Field>
       <Form.Field>
-        <label>url</label>
-        <input value={request === null ? "" : request.url} readOnly />
+        <label>Url</label>
+        <input
+          value={request.url}
+          onChange={e => onUrlChange(e.target.value)}
+        />
       </Form.Field>
-      {(request === null ? [] : Object.entries(request.headers)).map(
-        ([key, value]) => (
-          <Form.Field key={key}>
-            <label>{key}</label>
-            <input value={value} readOnly />
-          </Form.Field>
-        )
-      )}
+      {Object.entries(request.headers).map(([key, value]) => (
+        <Form.Field key={key}>
+          <label>{key}</label>
+          <input
+            value={value}
+            onChange={e => onHeadersChange(key, e.target.value)}
+          />
+        </Form.Field>
+      ))}
     </Form>
   );
 };

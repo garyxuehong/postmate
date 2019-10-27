@@ -9,3 +9,7 @@ body {
 #requestList .api-item i {
   margin-right: 10px;
 }
+
+.btn-sync button {
+  width: 100%;
+}

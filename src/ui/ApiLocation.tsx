@@ -21,6 +21,8 @@ export default function ApiLocation({
           }}
         />
         <Form.Button
+          className="btn-sync"
+          secondary
           width={2}
           onClick={async () => {
             onSync(tempLocation);

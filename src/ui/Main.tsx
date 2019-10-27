@@ -13,7 +13,7 @@ const DEMO_API = "/Users/xueg/source/fun/postmate/fixtures/api1.yaml";
 
 const Main: React.FC = () => {
   const [doc, setDoc] = useState<ApiDoc>(new ApiDoc());
-  const [activeRequest, setActiveRequest] = useState<ApiRequest | null>(null);
+  const [activeRequest, setActiveRequest] = useState<ApiRequest>(new ApiRequest());
   useEffect(() => {
     async function load() {
       const newDoc = await loadApiDoc(DEMO_API);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ApiRequest, RequestSendResponse } from "../model/model";
 import RequestPanel from "./RequestPanel";
 import ResponsePanel from "./ResponsePanel";
@@ -8,25 +8,45 @@ import sendRequest from "../request-sender/request-sender";
 export default function RequestOperationPanel({
   request
 }: {
-  request: ApiRequest | null;
+  request: ApiRequest;
 }) {
+  const [tempRequest, updateTempRequest] = useState<ApiRequest>(request);
+  useEffect(() => {
+    updateTempRequest(request);
+  }, [request]);
   const [response, setResponse] = useState<RequestSendResponse | null>(null);
   return (
     <div>
-      <h1>
-        Request
-        <Button
-          onClick={async () => {
-            if (request === null) return;
-            const resp = await sendRequest(request);
-            setResponse(resp);
-          }}
-        >
-          Send
-        </Button>
-      </h1>
+      <h1>Request</h1>
       <div>
-        <RequestPanel request={request} />
+        <RequestPanel
+          request={tempRequest}
+          onMethodChange={method => {
+            updateTempRequest({ ...tempRequest, method });
+          }}
+          onUrlChange={url => {
+            updateTempRequest({ ...tempRequest, url });
+          }}
+          onHeadersChange={(key, value) => {
+            updateTempRequest({
+              ...tempRequest,
+              headers: { ...tempRequest.headers, ...{ [key]: value } }
+            });
+          }}
+        />
+        <p>
+          <br />
+          <Button
+            primary
+            onClick={async () => {
+              setResponse(new RequestSendResponse());
+              const resp = await sendRequest(tempRequest);
+              setResponse(resp);
+            }}
+          >
+            Send
+          </Button>
+        </p>
       </div>
       <h1>Response</h1>
       <div>
