@@ -10,7 +10,7 @@
     "test": "rescripts test",
     "dev": "concurrently \"BROWSER=none yarn js-start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
-    "preelectron-pack": "yarn js-build",
+    "prebuild": "yarn js-build",
     "build": "electron-builder -m"
   },
   "author": {
