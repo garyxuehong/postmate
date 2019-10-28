@@ -4,8 +4,16 @@ export class Setting {
 
 export class ApiDoc {
   name: string = "";
+  certs: ApiCert[] = [];
   environments: ApiEnvironment[] = [];
   collections: ApiCollection[] = [];
+}
+
+export class ApiCert {
+  domain: string = "";
+  type: string = "pfx";
+  file: string = "";
+  passphrase: string = "";
 }
 
 export class ApiEnvironment {

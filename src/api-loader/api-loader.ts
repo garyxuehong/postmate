@@ -8,5 +8,5 @@ export default async function loadLocation(
   apiLocation: string
 ): Promise<ApiDoc> {
   const content = await fs.readFile(apiLocation, "utf-8");
-  return apiParser(content);
+  return apiParser(apiLocation, content);
 }

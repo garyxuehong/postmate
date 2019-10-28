@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ApiRequest, RequestSendResponse, Variables } from "../model/model";
+import { ApiRequest, ApiCert, RequestSendResponse, Variables } from "../model/model";
 import RequestPanel from "./RequestPanel";
 import ResponsePanel from "./ResponsePanel";
 import { Button } from "semantic-ui-react";
@@ -7,9 +7,11 @@ import sendRequest from "../request-sender/request-sender";
 
 export default function RequestOperationPanel({
   request,
+  certs,
   variables
 }: {
   request: ApiRequest;
+  certs: ApiCert[];
   variables: Variables;
 }) {
   const [tempRequest, updateTempRequest] = useState<ApiRequest>(request);
@@ -42,7 +44,7 @@ export default function RequestOperationPanel({
             primary
             onClick={async () => {
               setResponse(new RequestSendResponse());
-              const resp = await sendRequest(tempRequest, variables);
+              const resp = await sendRequest(tempRequest, variables, certs);
               setResponse(resp);
             }}
           >

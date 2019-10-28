@@ -65,6 +65,7 @@ const Main: React.FC = () => {
           <RequestOperationPanel
             request={activeRequest}
             variables={currVariables}
+            certs={doc.certs}
           />
         </Grid.Column>
         <Grid.Column width={4}>

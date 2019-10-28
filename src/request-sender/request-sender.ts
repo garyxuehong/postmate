@@ -1,5 +1,6 @@
 import {
   ApiRequest,
+  ApiCert,
   RequestSendResponse,
   Variables,
   Headers
@@ -7,39 +8,49 @@ import {
 
 import http from "http";
 import https from "https";
+import fs from "fs";
+
+import util from "util";
+const readFile = util.promisify(fs.readFile);
 
 export default async function send(
   request: ApiRequest,
-  variables: Variables
+  variables: Variables,
+  certs: ApiCert[]
 ): Promise<RequestSendResponse> {
-  const isHttps = request.url.toLowerCase().startsWith("https");
+  const url = varReplace(request.url, variables);
+  const isHttps = url.toLowerCase().startsWith("https");
+  const cert = certs.find(cert => url.includes(cert.domain));
+  const certOption: { [index: string]: any } = {};
+  if (isHttps && cert) {
+    const certFileContent = await readFile(cert.file);
+    certOption[cert.type] = certFileContent;
+    certOption["passphrase"] = cert.passphrase;
+  }
   return new Promise((resolve, reject) => {
-    const url = varReplace(request.url, variables);
     console.info(`Sending request to ${url}`);
+    const option: { [index: string]: any } = {
+      method: varReplace(request.method, variables),
+      headers: varHeaderReplace(request.headers, variables),
+      ...certOption
+    };
     (isHttps ? https : http)
-      .request(
-        url,
-        {
-          method: varReplace(request.method, variables),
-          headers: varHeaderReplace(request.headers, variables)
-        },
-        resp => {
-          let body = "";
-          resp
-            .on("data", d => {
-              body += d;
-            })
-            .on("end", () => {
-              const ret = new RequestSendResponse();
-              ret.statusCode = resp.statusCode || 0;
-              ret.headers = (resp.headers as any) as {
-                [index: string]: string;
-              };
-              ret.body = body;
-              resolve(ret);
-            });
-        }
-      )
+      .request(url, option, resp => {
+        let body = "";
+        resp
+          .on("data", d => {
+            body += d;
+          })
+          .on("end", () => {
+            const ret = new RequestSendResponse();
+            ret.statusCode = resp.statusCode || 0;
+            ret.headers = (resp.headers as any) as {
+              [index: string]: string;
+            };
+            ret.body = body;
+            resolve(ret);
+          });
+      })
       .on("error", e => {
         reject(e);
       })
