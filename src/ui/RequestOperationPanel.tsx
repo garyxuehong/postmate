@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ApiRequest, ApiCert, RequestSendResponse, Variables } from "../model/model";
+import {
+  ApiRequest,
+  ApiCert,
+  RequestSendResponse,
+  Variables
+} from "../model/model";
 import RequestPanel from "./RequestPanel";
 import ResponsePanel from "./ResponsePanel";
 import { Button } from "semantic-ui-react";
@@ -36,6 +41,9 @@ export default function RequestOperationPanel({
               ...tempRequest,
               headers: { ...tempRequest.headers, ...{ [key]: value } }
             });
+          }}
+          onBodyChange={body => {
+            updateTempRequest({ ...tempRequest, body });
           }}
         />
         <p>

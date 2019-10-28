@@ -7,7 +7,14 @@ const RequestPanel: React.FC<{
   onMethodChange: (value: string) => void;
   onUrlChange: (value: string) => void;
   onHeadersChange: (key: string, value: string) => void;
-}> = ({ request, onMethodChange, onUrlChange, onHeadersChange }) => {
+  onBodyChange: (value: string) => void;
+}> = ({
+  request,
+  onMethodChange,
+  onUrlChange,
+  onHeadersChange,
+  onBodyChange
+}) => {
   return (
     <Form>
       <Form.Field>
@@ -33,6 +40,13 @@ const RequestPanel: React.FC<{
           />
         </Form.Field>
       ))}
+      <Form.Field>
+        <label>Body</label>
+        <textarea
+          value={request.body}
+          onChange={e => onBodyChange(e.target.value)}
+        />
+      </Form.Field>
     </Form>
   );
 };

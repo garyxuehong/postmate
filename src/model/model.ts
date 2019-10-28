@@ -39,6 +39,7 @@ export class ApiRequest {
   method: string = "GET";
   url: string = "";
   headers: Headers = {};
+  body: string = "";
 }
 
 export class RequestSendResponse {
