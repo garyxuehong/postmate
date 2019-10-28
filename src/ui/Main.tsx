@@ -8,6 +8,7 @@ import { ApiDoc, ApiRequest } from "../model/model";
 import ApiLocation from "./ApiLocation";
 import RequestList from "./RequestList";
 import RequestOperationPanel from "./RequestOperationPanel";
+import Variables from "./Variables";
 
 import { get as getSettings, set as setSettings } from "../settings/settings";
 
@@ -53,8 +54,11 @@ const Main: React.FC = () => {
         <Grid.Column width={4}>
           <RequestList doc={doc} onActivateRequest={setActiveRequest} />
         </Grid.Column>
-        <Grid.Column width={12}>
+        <Grid.Column width={8}>
           <RequestOperationPanel request={activeRequest} />
+        </Grid.Column>
+        <Grid.Column width={4}>
+          <Variables environments={doc.environments} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

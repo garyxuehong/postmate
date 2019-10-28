@@ -4,7 +4,18 @@ export class Setting {
 
 export class ApiDoc {
   name: string = "";
+  environments: ApiEnvironment[] = [];
   collections: ApiCollection[] = [];
+}
+
+export class ApiEnvironment {
+  name: string = "";
+  variables: ApiEnvironmentVariable[] = [];
+}
+
+export class ApiEnvironmentVariable {
+  key: string = "";
+  value: string = "";
 }
 
 export class ApiCollection {

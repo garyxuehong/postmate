@@ -1,15 +1,26 @@
 name: Reececonnect API
+environments:
+  - name: dmz stage
+    variables:
+      - key: hostname
+        value: reecestgausys.reece.com.au
+  - name: airmaster stage
+    variables:
+      - key: consumerKey
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQUlSTUFTVEVSIiwiZW52Ijoic3RhZ2UifQ.Zz-1VK5tvj-6M4SqG6gkoGwUTEe32w361FXTx3WgHLg
+      - key: customerNumber
+        value: 11268
 collections:
   - name: Auth Gateway
     requests:
       - name: Auth
         method: GET
         url: |
-          http://reecestgausys.reece.com.au/enterprise-customer-auth-service/auth
+          http://{hostname}/enterprise-customer-auth-service/auth
         headers:
           content-type: application/json
-          consumer-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQUlSTUFTVEVSIiwiZW52Ijoic3RhZ2UifQ.Zz-1VK5tvj-6M4SqG6gkoGwUTEe32w361FXTx3WgHLg
-          x-forwarded-uri: /au/invoice-gateway/invoice-headers?customerNumber=11268&documentTypes=TAX_INVOICE&fromDate=2019-04-16&toDate=2019-05-21
+          consumer-key: {consumerKey}
+          x-forwarded-uri: /au/invoice-gateway/invoice-headers?customerNumber={customerNumber}&documentTypes=TAX_INVOICE&fromDate=2019-04-16&toDate=2019-05-21
   - name: Invoice Gateway
     requests:
       - name: Invoice Headers
