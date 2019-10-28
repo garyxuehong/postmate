@@ -2,11 +2,11 @@ import React from "react";
 
 import { Dropdown, Form } from "semantic-ui-react";
 
-import { ApiEnvironment, Variable } from "../model/model";
+import { ApiEnvironment, Variables } from "../model/model";
 
-const Variables: React.FC<{
+const VariablesPanel: React.FC<{
   environments: ApiEnvironment[];
-  currVariables: Variable[];
+  currVariables: Variables;
   onPickEnv: (env: ApiEnvironment) => void;
 }> = ({ environments, currVariables, onPickEnv }) => {
   return (
@@ -27,10 +27,10 @@ const Variables: React.FC<{
         </Dropdown>
       </div>
       <Form>
-        {currVariables.map(variable => (
-          <Form.Field key={variable.key}>
-            <label>{variable.key}</label>
-            <input value={variable.value} readOnly />
+        {Object.keys(currVariables).map(key => (
+          <Form.Field key={key}>
+            <label>{key}</label>
+            <input value={currVariables[key]} readOnly />
           </Form.Field>
         ))}
       </Form>
@@ -38,4 +38,4 @@ const Variables: React.FC<{
   );
 };
 
-export default Variables;
+export default VariablesPanel;

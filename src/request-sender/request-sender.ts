@@ -1,7 +1,7 @@
 import {
   ApiRequest,
   RequestSendResponse,
-  Variable,
+  Variables,
   Headers
 } from "../model/model";
 
@@ -10,7 +10,7 @@ import https from "https";
 
 export default async function send(
   request: ApiRequest,
-  variables: Variable[]
+  variables: Variables
 ): Promise<RequestSendResponse> {
   const isHttps = request.url.toLowerCase().startsWith("https");
   return new Promise((resolve, reject) => {
@@ -45,11 +45,11 @@ export default async function send(
   });
 }
 
-function varReplace(str: string, variables: Variable[]): string {
+function varReplace(str: string, variables: Variables): string {
   return replaceStrWithVariables(str, variables);
 }
 
-function varHeaderReplace(headers: Headers, variables: Variable[]): Headers {
+function varHeaderReplace(headers: Headers, variables: Variables): Headers {
   const ret: Headers = {};
   for (const key of Object.keys(headers)) {
     ret[key] = replaceStrWithVariables(headers[key], variables);
@@ -57,10 +57,10 @@ function varHeaderReplace(headers: Headers, variables: Variable[]): Headers {
   return ret;
 }
 
-function replaceStrWithVariables(str: string, variables: Variable[]) {
+function replaceStrWithVariables(str: string, variables: Variables) {
   let newStr = str;
-  for (const curr of variables) {
-    newStr = replaceStrWithAll(newStr, curr.key, curr.value);
+  for (const [key, value] of Object.entries(variables)) {
+    newStr = replaceStrWithAll(newStr, key, value);
   }
   return newStr;
 }

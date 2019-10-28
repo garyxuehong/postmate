@@ -2,14 +2,11 @@ name: Reececonnect API
 environments:
   - name: dmz stage
     variables:
-      - key: hostname
-        value: reecestgausys.reece.com.au
+      hostname: reecestgausys.reece.com.au
   - name: airmaster stage
     variables:
-      - key: consumerKey
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQUlSTUFTVEVSIiwiZW52Ijoic3RhZ2UifQ.Zz-1VK5tvj-6M4SqG6gkoGwUTEe32w361FXTx3WgHLg
-      - key: customerNumber
-        value: 11268
+      consumerKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQUlSTUFTVEVSIiwiZW52Ijoic3RhZ2UifQ.Zz-1VK5tvj-6M4SqG6gkoGwUTEe32w361FXTx3WgHLg
+      customerNumber: 11268
 collections:
   - name: Auth Gateway
     requests:

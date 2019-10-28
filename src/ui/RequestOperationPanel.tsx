@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ApiRequest, RequestSendResponse, Variable } from "../model/model";
+import { ApiRequest, RequestSendResponse, Variables } from "../model/model";
 import RequestPanel from "./RequestPanel";
 import ResponsePanel from "./ResponsePanel";
 import { Button } from "semantic-ui-react";
@@ -10,7 +10,7 @@ export default function RequestOperationPanel({
   variables
 }: {
   request: ApiRequest;
-  variables: Variable[];
+  variables: Variables;
 }) {
   const [tempRequest, updateTempRequest] = useState<ApiRequest>(request);
   useEffect(() => {

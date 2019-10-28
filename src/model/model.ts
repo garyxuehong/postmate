@@ -10,12 +10,11 @@ export class ApiDoc {
 
 export class ApiEnvironment {
   name: string = "";
-  variables: Variable[] = [];
+  variables: Variables = {};
 }
 
-export class Variable {
-  key: string = "";
-  value: string = "";
+export class Variables {
+  [index: string]: string;
 }
 
 export class ApiCollection {
