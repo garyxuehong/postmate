@@ -23,15 +23,19 @@ export class ApiCollection {
   requests: ApiRequest[] = [];
 }
 
+export class Headers {
+  [index: string]: string;
+}
+
 export class ApiRequest {
   name: string = "";
   method: string = "GET";
   url: string = "";
-  headers: { [index: string]: string } = {};
+  headers: Headers = {};
 }
 
 export class RequestSendResponse {
   statusCode: number = 0;
-  headers: { [index: string]: string } = {};
+  headers: Headers = {};
   body: string = "";
 }

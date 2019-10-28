@@ -16,11 +16,11 @@ collections:
       - name: Auth
         method: GET
         url: |
-          http://{hostname}/enterprise-customer-auth-service/auth
+          http://${hostname}/enterprise-customer-auth-service/auth
         headers:
           content-type: application/json
-          consumer-key: {consumerKey}
-          x-forwarded-uri: /au/invoice-gateway/invoice-headers?customerNumber={customerNumber}&documentTypes=TAX_INVOICE&fromDate=2019-04-16&toDate=2019-05-21
+          consumer-key: ${consumerKey}
+          x-forwarded-uri: /au/invoice-gateway/invoice-headers?customerNumber=${customerNumber}&documentTypes=TAX_INVOICE&fromDate=2019-04-16&toDate=2019-05-21
   - name: Invoice Gateway
     requests:
       - name: Invoice Headers
