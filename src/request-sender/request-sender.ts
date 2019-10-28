@@ -19,6 +19,10 @@ export default async function send(
   certs: ApiCert[]
 ): Promise<RequestSendResponse> {
   const url = varReplace(request.url, variables);
+  if (request.method.toUpperCase() === "BROWSER") {
+    window.open(url);
+    return new RequestSendResponse();
+  }
   const isHttps = url.toLowerCase().startsWith("https");
   const cert = certs.find(cert => url.includes(cert.domain));
   const certOption: { [index: string]: any } = {};
