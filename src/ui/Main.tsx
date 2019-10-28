@@ -3,7 +3,7 @@ import { Grid } from "semantic-ui-react";
 
 import loadApiDoc from "../api-loader/api-loader";
 
-import { ApiDoc, ApiRequest } from "../model/model";
+import { ApiDoc, ApiRequest, Variable, ApiEnvironment } from "../model/model";
 
 import ApiLocation from "./ApiLocation";
 import RequestList from "./RequestList";
@@ -18,6 +18,8 @@ const Main: React.FC = () => {
   const [activeRequest, setActiveRequest] = useState<ApiRequest>(
     new ApiRequest()
   );
+  const [currVariables, updateCurrentVariables] = useState<Variable[]>([]);
+
   useEffect(() => {
     async function load() {
       try {
@@ -31,6 +33,16 @@ const Main: React.FC = () => {
     }
     load();
   }, []);
+
+  function onPickEnv(env: ApiEnvironment) {
+    const allVariables: Variable[] = [...currVariables, ...env.variables];
+    const unique: Variable[] = [];
+    for (const curr of allVariables) {
+      if (unique.some(v => v.key === curr.key)) continue;
+      unique.push(curr);
+    }
+    updateCurrentVariables(unique);
+  }
   return (
     <Grid className="Main">
       <Grid.Row>
@@ -58,7 +70,11 @@ const Main: React.FC = () => {
           <RequestOperationPanel request={activeRequest} />
         </Grid.Column>
         <Grid.Column width={4}>
-          <Variables environments={doc.environments} />
+          <Variables
+            currVariables={currVariables}
+            environments={doc.environments}
+            onPickEnv={onPickEnv}
+          />
         </Grid.Column>
       </Grid.Row>
     </Grid>

@@ -10,10 +10,10 @@ export class ApiDoc {
 
 export class ApiEnvironment {
   name: string = "";
-  variables: ApiEnvironmentVariable[] = [];
+  variables: Variable[] = [];
 }
 
-export class ApiEnvironmentVariable {
+export class Variable {
   key: string = "";
   value: string = "";
 }
