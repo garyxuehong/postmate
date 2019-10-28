@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "semantic-ui-react";
 
 export default function ApiLocation({
   location,
   onSync
 }: {
-  location: string;
+  location: string | null;
   onSync: (location: string) => void;
 }) {
   const [tempLocation, updateTempLocation] = useState(location);
+  useEffect(() => {
+    updateTempLocation(location);
+  }, [location]);
   return (
     <Form>
       <Form.Group>
         <Form.Input
           width={14}
           placeholder="Yaml API Collections..."
-          value={tempLocation}
+          value={tempLocation || ""}
           onChange={e => {
             updateTempLocation(e.target.value);
           }}
@@ -25,7 +28,7 @@ export default function ApiLocation({
           secondary
           width={2}
           onClick={async () => {
-            onSync(tempLocation);
+            if (tempLocation !== null) onSync(tempLocation);
           }}
         >
           Sync

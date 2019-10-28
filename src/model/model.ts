@@ -1,3 +1,7 @@
+export class Setting {
+  apiDocLocation: string = "";
+}
+
 export class ApiDoc {
   name: string = "";
   collections: ApiCollection[] = [];

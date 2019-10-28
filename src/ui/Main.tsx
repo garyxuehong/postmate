@@ -9,15 +9,24 @@ import ApiLocation from "./ApiLocation";
 import RequestList from "./RequestList";
 import RequestOperationPanel from "./RequestOperationPanel";
 
-const DEMO_API = "/Users/xueg/source/fun/postmate/fixtures/api1.yaml";
+import { get as getSettings, set as setSettings } from "../settings/settings";
 
 const Main: React.FC = () => {
   const [doc, setDoc] = useState<ApiDoc>(new ApiDoc());
-  const [activeRequest, setActiveRequest] = useState<ApiRequest>(new ApiRequest());
+  const [apiDocLocation, updateApiDocLocation] = useState("");
+  const [activeRequest, setActiveRequest] = useState<ApiRequest>(
+    new ApiRequest()
+  );
   useEffect(() => {
     async function load() {
-      const newDoc = await loadApiDoc(DEMO_API);
-      setDoc(newDoc);
+      try {
+        const setting = await getSettings();
+        const newDoc = await loadApiDoc(setting.apiDocLocation);
+        updateApiDocLocation(setting.apiDocLocation);
+        setDoc(newDoc);
+      } catch (e) {
+        console.warn(e);
+      }
     }
     load();
   }, []);
@@ -26,10 +35,16 @@ const Main: React.FC = () => {
       <Grid.Row>
         <Grid.Column width={16}>
           <ApiLocation
-            location={DEMO_API}
+            location={apiDocLocation}
             onSync={async (location: string) => {
-              const doc = await loadApiDoc(location);
-              setDoc(doc);
+              try {
+                const doc = await loadApiDoc(location);
+                await setSettings({ apiDocLocation: location });
+                updateApiDocLocation(apiDocLocation);
+                setDoc(doc);
+              } catch (e) {
+                console.warn(e);
+              }
             }}
           />
         </Grid.Column>
