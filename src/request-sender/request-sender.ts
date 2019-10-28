@@ -14,9 +14,11 @@ export default async function send(
 ): Promise<RequestSendResponse> {
   const isHttps = request.url.toLowerCase().startsWith("https");
   return new Promise((resolve, reject) => {
+    const url = varReplace(request.url, variables);
+    console.info(`Sending request to ${url}`);
     (isHttps ? https : http)
       .request(
-        varReplace(request.url, variables),
+        url,
         {
           method: varReplace(request.method, variables),
           headers: varHeaderReplace(request.headers, variables)
@@ -59,8 +61,12 @@ function varHeaderReplace(headers: Headers, variables: Variables): Headers {
 
 function replaceStrWithVariables(str: string, variables: Variables) {
   let newStr = str;
-  for (const [key, value] of Object.entries(variables)) {
-    newStr = replaceStrWithAll(newStr, key, value);
+  let count = 0;
+  while (newStr.includes("${")) {
+    if (count++ > 1000) break;
+    for (const [key, value] of Object.entries(variables)) {
+      newStr = replaceStrWithAll(newStr, key, value);
+    }
   }
   return newStr;
 }
