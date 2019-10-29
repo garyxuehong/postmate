@@ -31,6 +31,10 @@ export default async function send(
     certOption[cert.type] = certFileContent;
     certOption["passphrase"] = cert.passphrase;
   }
+  let requestBody = request.body || "";
+  if (requestBody !== "") {
+    requestBody = varReplace(requestBody, variables);
+  }
   return new Promise((resolve, reject) => {
     console.info(`Sending request to ${url}`);
     const option: { [index: string]: any } = {
@@ -38,27 +42,29 @@ export default async function send(
       headers: varHeaderReplace(request.headers, variables),
       ...certOption
     };
-    (isHttps ? https : http)
-      .request(url, option, resp => {
-        let body = "";
-        resp
-          .on("data", d => {
-            body += d;
-          })
-          .on("end", () => {
-            const ret = new RequestSendResponse();
-            ret.statusCode = resp.statusCode || 0;
-            ret.headers = (resp.headers as any) as {
-              [index: string]: string;
-            };
-            ret.body = body;
-            resolve(ret);
-          });
-      })
-      .on("error", e => {
-        reject(e);
-      })
-      .end();
+    const newRequest = (isHttps ? https : http).request(url, option, resp => {
+      let body = "";
+      resp
+        .on("data", d => {
+          body += d;
+        })
+        .on("end", () => {
+          const ret = new RequestSendResponse();
+          ret.statusCode = resp.statusCode || 0;
+          ret.headers = (resp.headers as any) as {
+            [index: string]: string;
+          };
+          ret.body = body;
+          resolve(ret);
+        });
+    });
+    newRequest.on("error", e => {
+      reject(e);
+    });
+    newRequest.write(requestBody, err => {
+      if (err) reject(err);
+      newRequest.end();
+    });
   });
 }
 
