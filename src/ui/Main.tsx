@@ -22,13 +22,19 @@ const Main: React.FC = () => {
   const [currVariables, updateCurrentVariables] = useState<Variables>({});
 
   useEffect(() => {
+    const updateVars = (_: any, msg: Variables) => {
+      const allVariables: Variables = { ...currVariables, ...msg };
+      updateCurrentVariables(allVariables);
+    };
     async function messagesWithMain() {
-      ipcRenderer.on("newVariables", (_, msg) => {
-        const vars: Variables = msg;
-        const allVariables: Variables = { ...currVariables, ...vars };
-        updateCurrentVariables(allVariables);
-      });
+      ipcRenderer.on("newVariables", updateVars);
     }
+    messagesWithMain();
+    return () => {
+      ipcRenderer.off("newVariables", updateVars);
+    };
+  }, [currVariables]);
+  useEffect(() => {
     async function load() {
       try {
         const setting = await getSettings();
@@ -39,7 +45,6 @@ const Main: React.FC = () => {
         console.warn(e);
       }
     }
-    messagesWithMain();
     load();
   }, []);
 
