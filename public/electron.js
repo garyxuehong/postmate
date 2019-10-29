@@ -15,8 +15,15 @@ let mockInfo = {};
 let mainWindow;
 
 async function startMockServer() {
-  const key = fs.readFileSync(path.join(__dirname, "../certs/key.pem"));
-  const cert = fs.readFileSync(path.join(__dirname, "../certs/cert.pem"));
+  const key = fs.readFileSync(
+    path.join(__dirname, isDev ? "../certs/key.pem" : "../build/certs/key.pem")
+  );
+  const cert = fs.readFileSync(
+    path.join(
+      __dirname,
+      isDev ? "../certs/cert.pem" : "../build/certs/cert.pem"
+    )
+  );
   return new Promise(resolve => {
     mockPostbackServer.use(bodyParser.urlencoded({ extended: false }));
     mockPostbackServer.use(bodyParser.json());
@@ -29,17 +36,17 @@ async function startMockServer() {
       res.status(200);
       res.end();
       let variables = {};
-      if(typeof req.body === 'string') {
-        try{
-          variables = {...JSON.parse(req.body)};
-        }catch(e){
+      if (typeof req.body === "string") {
+        try {
+          variables = { ...JSON.parse(req.body) };
+        } catch (e) {
           console.warn(e);
         }
-      }else{
+      } else {
         variables = req.body;
       }
-      setTimeout(()=>{
-        mainWindow.send('newVariables', variables);
+      setTimeout(() => {
+        mainWindow.send("newVariables", variables);
       });
     }
 
