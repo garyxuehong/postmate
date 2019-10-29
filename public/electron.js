@@ -11,6 +11,9 @@ const express = require("express");
 const mockPostbackServer = express();
 const bodyParser = require("body-parser");
 
+let mockInfo = {};
+let mainWindow;
+
 async function startMockServer() {
   const key = fs.readFileSync(path.join(__dirname, "../certs/key.pem"));
   const cert = fs.readFileSync(path.join(__dirname, "../certs/cert.pem"));
@@ -25,6 +28,19 @@ async function startMockServer() {
       console.log(req.body);
       res.status(200);
       res.end();
+      let variables = {};
+      if(typeof req.body === 'string') {
+        try{
+          variables = {...JSON.parse(req.body)};
+        }catch(e){
+          console.warn(e);
+        }
+      }else{
+        variables = req.body;
+      }
+      setTimeout(()=>{
+        mainWindow.send('newVariables', variables);
+      });
     }
 
     console.info(`now starting mock server...`);
@@ -40,10 +56,7 @@ async function startMockServer() {
   });
 }
 
-let mockInfo = {};
 async function start() {
-  let mainWindow;
-
   mockInfo = await startMockServer();
 
   function createWindow() {
@@ -89,6 +102,18 @@ async function start() {
       );
     }
   });
+
+  app.on(
+    "certificate-error",
+    (event, webContents, url, error, certificate, callback) => {
+      if (url.startsWith("https://localhost")) {
+        event.preventDefault();
+        callback(true);
+      } else {
+        callback(false);
+      }
+    }
+  );
 }
 
 start();
