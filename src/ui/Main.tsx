@@ -1,3 +1,4 @@
+import { ipcRenderer } from "electron";
 import React, { useState, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
 
@@ -21,6 +22,13 @@ const Main: React.FC = () => {
   const [currVariables, updateCurrentVariables] = useState<Variables>({});
 
   useEffect(() => {
+    async function messagesWithMain() {
+      ipcRenderer.on("newVariables", (_, msg) => {
+        const vars: Variables = msg;
+        const allVariables: Variables = { ...currVariables, ...vars };
+        updateCurrentVariables(allVariables);
+      });
+    }
     async function load() {
       try {
         const setting = await getSettings();
@@ -31,6 +39,7 @@ const Main: React.FC = () => {
         console.warn(e);
       }
     }
+    messagesWithMain();
     load();
   }, []);
 
