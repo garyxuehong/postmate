@@ -40,6 +40,11 @@ export class ApiRequest {
   url: string = "";
   headers: Headers = {};
   body: string = "";
+  variablesExtract: VariablesExtract = {};
+}
+
+export class VariablesExtract {
+  [index: string]: string;
 }
 
 export class RequestSendResponse {

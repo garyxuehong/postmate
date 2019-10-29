@@ -38,6 +38,12 @@ const Main: React.FC = () => {
     const allVariables: Variables = { ...currVariables, ...env.variables };
     updateCurrentVariables(allVariables);
   }
+
+  function onExtractVariable(vars: Variables) {
+    const allVariables: Variables = { ...currVariables, ...vars };
+    updateCurrentVariables(allVariables);
+  }
+
   return (
     <Grid className="Main">
       <Grid.Row>
@@ -66,6 +72,7 @@ const Main: React.FC = () => {
             request={activeRequest}
             variables={currVariables}
             certs={doc.certs}
+            onExtractVariable={onExtractVariable}
           />
         </Grid.Column>
         <Grid.Column width={4}>

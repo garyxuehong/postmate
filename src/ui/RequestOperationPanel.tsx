@@ -9,15 +9,18 @@ import RequestPanel from "./RequestPanel";
 import ResponsePanel from "./ResponsePanel";
 import { Button } from "semantic-ui-react";
 import sendRequest from "../request-sender/request-sender";
+import variablesExtract from '../response-extractor/response-extractor';
 
 export default function RequestOperationPanel({
   request,
   certs,
-  variables
+  variables,
+  onExtractVariable
 }: {
   request: ApiRequest;
   certs: ApiCert[];
   variables: Variables;
+  onExtractVariable: (variables: Variables) => void;
 }) {
   const [tempRequest, updateTempRequest] = useState<ApiRequest>(request);
   useEffect(() => {
@@ -53,7 +56,9 @@ export default function RequestOperationPanel({
             onClick={async () => {
               setResponse(new RequestSendResponse());
               const resp = await sendRequest(tempRequest, variables, certs);
+              const extractedVariables = variablesExtract(resp.body, request.variablesExtract);
               setResponse(resp);
+              onExtractVariable(extractedVariables);
             }}
           >
             Send
