@@ -39,7 +39,7 @@ export default async function send(
     console.info(`Sending request to ${url}`);
     const option: { [index: string]: any } = {
       method: varReplace(request.method, variables),
-      headers: varHeaderReplace(request.headers, variables),
+      headers: varHeaderReplace(request.headers || {}, variables),
       ...certOption
     };
     const newRequest = (isHttps ? https : http).request(url, option, resp => {

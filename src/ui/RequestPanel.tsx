@@ -31,7 +31,7 @@ const RequestPanel: React.FC<{
           onChange={e => onUrlChange(e.target.value)}
         />
       </Form.Field>
-      {Object.entries(request.headers).map(([key, value]) => (
+      {Object.entries(request.headers || {}).map(([key, value]) => (
         <Form.Field key={key}>
           <label>{key}</label>
           <input

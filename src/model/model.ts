@@ -38,7 +38,7 @@ export class ApiRequest {
   name: string = "";
   method: string = "GET";
   url: string = "";
-  headers: Headers = {};
+  headers: Headers | null = {};
   body: string = "";
   variablesExtract: VariablesExtract = {};
 }
