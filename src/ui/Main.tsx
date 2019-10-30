@@ -60,7 +60,7 @@ const Main: React.FC = () => {
 
   return (
     <Grid className="Main">
-      <Grid.Row>
+      <Grid.Row className="apiLocationRow">
         <Grid.Column width={16}>
           <ApiLocation
             location={apiDocLocation}

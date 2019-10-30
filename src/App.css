@@ -2,6 +2,12 @@ body {
   padding: 20px;
 }
 
+.apiLocationRow {
+  padding-top: 8px !important;
+  padding-bottom: 0px !important;
+  margin-bottom: -8px !important;
+}
+
 #requestList .api-item {
   padding-left: 20px;
 }
@@ -12,4 +18,34 @@ body {
 
 .btn-sync button {
   width: 100%;
+}
+
+.apiRequestGroup {
+  margin-top: 20px;
+}
+
+.requestPanel,
+.responsePanel,
+.variablesPanel {
+  padding-top: 20px;
+}
+
+.api-item {
+  cursor: pointer;
+  position: relative;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  padding-left: 30px !important;
+}
+
+.api-item:hover {
+  background-color: #115f9a;
+  color: white;
+}
+
+.requestLabel {
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%);
 }

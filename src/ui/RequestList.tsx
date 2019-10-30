@@ -2,7 +2,28 @@ import React, { useState } from "react";
 
 import { ApiDoc, ApiRequest } from "../model/model";
 
-import { Accordion, Icon, List } from "semantic-ui-react";
+import {
+  Segment,
+  Accordion,
+  Icon,
+  List,
+  Header,
+  Label
+} from "semantic-ui-react";
+
+function getColor(method: string) {
+  if (!method) {
+    return "grey";
+  }
+  method = method.toUpperCase();
+  if (method === "GET") return "green";
+  if (method === "POST") return "orange";
+  if (method === "PUT") return "orange";
+  if (method === "PATCH") return "orange";
+  if (method === "DELETE") return "red";
+  if (method === "BROWSER") return "blue";
+  return "grey";
+}
 
 export default function RequestList({
   doc,
@@ -11,41 +32,64 @@ export default function RequestList({
   doc: ApiDoc;
   onActivateRequest: (request: ApiRequest) => void;
 }) {
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [activeIdxMap, setActiveIdxMap] = useState<{
+    [index: number]: boolean | undefined;
+  }>({});
   return (
-    <>
-      <h1>{doc.name}</h1>
+    <Segment raised>
+      <Label color="blue" ribbon>
+        {doc.name}
+      </Label>
       <div id="requestList">
         <Accordion>
-          {doc.collections.map((col, idx) => (
-            <div key={col.name}>
-              <Accordion.Title
-                onClick={_ => {
-                  setActiveIdx(idx);
-                }}
-              >
-                <Icon name="dropdown" /> {col.name}
-              </Accordion.Title>
-              <Accordion.Content active={idx === activeIdx}>
-                <List>
-                  {col.requests.map(req => (
-                    <List.Item
-                      className="api-item"
-                      key={req.name}
-                      onClick={() => {
-                        onActivateRequest(req);
-                      }}
-                    >
-                      <Icon name="code" />
-                      {req.name}
-                    </List.Item>
-                  ))}
-                </List>
-              </Accordion.Content>
-            </div>
-          ))}
+          {doc.collections.map((col, idx: number) => {
+            const active = activeIdxMap[idx] !== false;
+            return (
+              <div key={col.name}>
+                <Accordion.Title
+                  className="apiRequestGroup"
+                  onClick={_ => {
+                    const newIdxMap: {
+                      [index: number]: boolean | undefined;
+                    } = {
+                      ...activeIdxMap
+                    };
+                    newIdxMap[idx] = !active;
+                    setActiveIdxMap(newIdxMap);
+                  }}
+                >
+                  <Header size="medium">
+                    <Icon name="dropdown" /> {col.name}
+                  </Header>
+                </Accordion.Title>
+                <Accordion.Content active={active}>
+                  <List>
+                    {col.requests.map(req => (
+                      <List.Item
+                        className="api-item"
+                        key={req.name}
+                        onClick={() => {
+                          onActivateRequest(req);
+                        }}
+                      >
+                        {req.name}
+                        <Label
+                          className="requestLabel"
+                          color={getColor(req.method)}
+                          horizontal
+                          basic
+                        >
+                          {req.method}
+                        </Label>
+                      </List.Item>
+                    ))}
+                  </List>
+                </Accordion.Content>
+              </div>
+            );
+          })}
         </Accordion>
       </div>
-    </>
+    </Segment>
   );
 }
