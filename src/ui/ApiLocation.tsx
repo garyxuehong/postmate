@@ -25,7 +25,7 @@ export default function ApiLocation({
         />
         <Form.Button
           className="btn-sync"
-          secondary
+          color='black'
           width={2}
           onClick={async () => {
             if (tempLocation !== null) onSync(tempLocation);

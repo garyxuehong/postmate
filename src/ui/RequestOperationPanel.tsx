@@ -7,7 +7,7 @@ import {
 } from "../model/model";
 import RequestPanel from "./RequestPanel";
 import ResponsePanel from "./ResponsePanel";
-import { Button, Segment, Label } from "semantic-ui-react";
+import { Icon, Button, Segment, Label } from "semantic-ui-react";
 import sendRequest from "../request-sender/request-sender";
 import variablesExtract from "../response-extractor/response-extractor";
 
@@ -22,17 +22,23 @@ export default function RequestOperationPanel({
   variables: Variables;
   onExtractVariable: (variables: Variables) => void;
 }) {
+  const [reqRespMap, updateReqRespMap] = useState<{
+    [index: string]: RequestSendResponse;
+  }>({});
   const [tempRequest, updateTempRequest] = useState<ApiRequest>(request);
+  const [response, setResponse] = useState<RequestSendResponse | null>(null);
   useEffect(() => {
     updateTempRequest(request);
+    const resp = reqRespMap[request.name];
+    setResponse(resp === undefined ? new RequestSendResponse() : resp);
   }, [request]);
-  const [response, setResponse] = useState<RequestSendResponse | null>(null);
   return (
     <div>
       <Segment raised>
         <Label color="blue" ribbon>
           Request
         </Label>
+        {request.name && <span className='activeApiName'>{request.name}</span>}
         <div className="requestPanel">
           <RequestPanel
             request={tempRequest}
@@ -64,9 +70,13 @@ export default function RequestOperationPanel({
                   request.variablesExtract
                 );
                 setResponse(resp);
+                const newReqMap = { ...reqRespMap };
+                newReqMap[tempRequest.name] = resp;
+                updateReqRespMap(newReqMap);
                 onExtractVariable(extractedVariables);
               }}
             >
+              <Icon name="send" />
               Send
             </Button>
           </p>

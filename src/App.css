@@ -42,7 +42,11 @@ body {
   background-color: #115f9a;
   color: white;
 }
-
+.api-item.active, .activeApiName {
+  font-weight: bold;
+  color: #115f9a;
+  background-color: transparent !important;
+}
 .requestLabel {
   position: absolute;
   top: 50%;

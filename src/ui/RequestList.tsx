@@ -35,6 +35,7 @@ export default function RequestList({
   const [activeIdxMap, setActiveIdxMap] = useState<{
     [index: number]: boolean | undefined;
   }>({});
+  const [lastClicked, updateLastClicked] = useState<string>("");
   return (
     <Segment raised>
       <Label color="blue" ribbon>
@@ -66,9 +67,12 @@ export default function RequestList({
                   <List>
                     {col.requests.map(req => (
                       <List.Item
-                        className="api-item"
+                        className={`api-item ${
+                          lastClicked === req.name ? "active" : ""
+                        }`}
                         key={req.name}
                         onClick={() => {
+                          updateLastClicked(req.name);
                           onActivateRequest(req);
                         }}
                       >

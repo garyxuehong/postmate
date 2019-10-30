@@ -5,6 +5,10 @@ import { Form } from "semantic-ui-react";
 const ResponsePanel: React.FC<{ response: RequestSendResponse | null }> = ({
   response
 }) => {
+  let body = response === null ? "" : response.body;
+  try {
+    body = JSON.stringify(JSON.parse(body), undefined, "  ");
+  } catch (_) {}
   return (
     <Form>
       <Form.Field>
@@ -14,13 +18,17 @@ const ResponsePanel: React.FC<{ response: RequestSendResponse | null }> = ({
       <Form.Field>
         <label>Headers</label>
         <textarea
-          value={response === null ? "" : JSON.stringify(response.headers)}
+          value={
+            response === null
+              ? ""
+              : JSON.stringify(response.headers, undefined, "  ")
+          }
           readOnly
         />
       </Form.Field>
       <Form.Field>
         <label>Body</label>
-        <textarea value={response === null ? "" : response.body} readOnly />
+        <textarea value={body} readOnly />
       </Form.Field>
     </Form>
   );
