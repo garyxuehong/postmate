@@ -24,7 +24,8 @@
     "productName": "Postmate",
     "copyright": "Copyright © 2019 ${author}",
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "target": "tar.gz"
     },
     "files": [
       "build/**/*",
