@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Modal, Header } from "semantic-ui-react";
+import { Form, Modal } from "semantic-ui-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
@@ -20,6 +20,7 @@ export default function ApiLocation({
       <Modal
         closeIcon
         trigger={
+          // eslint-disable-next-line
           <a className="linkOpenSample" onClick={openSample}>
             Example API Yaml
           </a>
