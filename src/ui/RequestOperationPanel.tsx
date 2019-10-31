@@ -31,6 +31,7 @@ export default function RequestOperationPanel({
     updateTempRequest(request);
     const resp = reqRespMap[request.name];
     setResponse(resp === undefined ? new RequestSendResponse() : resp);
+    // eslint-disable-next-line
   }, [request]);
   return (
     <div>
