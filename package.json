@@ -4,6 +4,7 @@
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
+  "description": "A rest api tool with git base yaml control",
   "scripts": {
     "js-start": "rescripts start",
     "js-build": "rescripts build",
@@ -46,7 +47,6 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "electron": "^7.0.0",
     "electron-is-dev": "^1.1.0",
     "electron-json-storage": "^4.1.8",
     "express": "^4.17.1",
@@ -69,6 +69,7 @@
     "@types/electron-json-storage": "^4.0.0",
     "@types/lodash": "^4.14.144",
     "concurrently": "^5.0.0",
+    "electron": "^7.0.0",
     "electron-builder": "^21.2.0",
     "typescript": "3.6.4",
     "wait-on": "^3.3.0"
