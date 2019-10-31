@@ -70,8 +70,10 @@ const Main: React.FC = () => {
                 await setSettings({ apiDocLocation: location });
                 updateApiDocLocation(apiDocLocation);
                 setDoc(doc);
+                alert(`Load success: ${location}`);
               } catch (e) {
                 console.warn(e);
+                alert(`Load failed: ${location}`);
               }
             }}
           />

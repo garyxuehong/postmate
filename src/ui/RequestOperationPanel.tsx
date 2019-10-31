@@ -27,6 +27,7 @@ export default function RequestOperationPanel({
   }>({});
   const [tempRequest, updateTempRequest] = useState<ApiRequest>(request);
   const [response, setResponse] = useState<RequestSendResponse | null>(null);
+  const [isSending, updateIsSending] = useState(false);
   useEffect(() => {
     updateTempRequest(request);
     const resp = reqRespMap[request.name];
@@ -39,7 +40,7 @@ export default function RequestOperationPanel({
         <Label color="blue" ribbon>
           Request
         </Label>
-        {request.name && <span className='activeApiName'>{request.name}</span>}
+        {request.name && <span className="activeApiName">{request.name}</span>}
         <div className="requestPanel">
           <RequestPanel
             request={tempRequest}
@@ -63,18 +64,27 @@ export default function RequestOperationPanel({
             <br />
             <Button
               color="green"
+              loading={isSending}
               onClick={async () => {
-                setResponse(new RequestSendResponse());
-                const resp = await sendRequest(tempRequest, variables, certs);
-                const extractedVariables = variablesExtract(
-                  resp.body,
-                  request.variablesExtract
-                );
-                setResponse(resp);
-                const newReqMap = { ...reqRespMap };
-                newReqMap[tempRequest.name] = resp;
-                updateReqRespMap(newReqMap);
-                onExtractVariable(extractedVariables);
+                try {
+                  updateIsSending(true);
+                  setResponse(new RequestSendResponse());
+                  const resp = await sendRequest(tempRequest, variables, certs);
+                  const extractedVariables = variablesExtract(
+                    resp.body,
+                    request.variablesExtract
+                  );
+                  setResponse(resp);
+                  const newReqMap = { ...reqRespMap };
+                  newReqMap[tempRequest.name] = resp;
+                  updateReqRespMap(newReqMap);
+                  onExtractVariable(extractedVariables);
+                } catch (e) {
+                  console.error(e);
+                  alert(e);
+                } finally {
+                  updateIsSending(false);
+                }
               }}
             >
               <Icon name="send" />
