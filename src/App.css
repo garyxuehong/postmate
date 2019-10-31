@@ -53,3 +53,12 @@ body {
   right: 0px;
   transform: translateY(-50%);
 }
+
+.linkOpenSample {
+  cursor: pointer;
+  display: inline-block;
+  font-style: italic;
+  color: grey;
+  text-decoration: underline;
+  padding-bottom: 8px;
+}
