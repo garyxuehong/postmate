@@ -7,7 +7,7 @@
   "scripts": {
     "js-start": "rescripts start",
     "js-build": "rescripts build",
-    "test": "rescripts test",
+    "test": "rescripts test --watchAll=false",
     "dev": "concurrently \"BROWSER=none yarn js-start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "prebuild": "yarn js-build",
