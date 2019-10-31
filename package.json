@@ -8,9 +8,9 @@
     "js-start": "rescripts start",
     "js-build": "rescripts build",
     "test": "rescripts test --watchAll=false",
-    "dev": "concurrently \"BROWSER=none yarn js-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "concurrently \"BROWSER=none npm run js-start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
-    "prebuild": "yarn js-build",
+    "prebuild": "npm run js-build",
     "build": "electron-builder -m"
   },
   "author": {
@@ -45,12 +45,8 @@
     ]
   },
   "dependencies": {
-    "@types/jest": "24.0.19",
-    "@types/js-yaml": "^3.12.1",
-    "@types/node": "12.11.7",
-    "@types/react": "16.9.11",
-    "@types/react-dom": "16.9.3",
     "body-parser": "^1.19.0",
+    "electron": "^7.0.0",
     "electron-is-dev": "^1.1.0",
     "electron-json-storage": "^4.1.8",
     "express": "^4.17.1",
@@ -60,17 +56,21 @@
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.1",
-    "typescript": "3.6.4"
+    "semantic-ui-react": "^0.88.1"
   },
   "devDependencies": {
+    "@types/jest": "24.0.19",
+    "@types/js-yaml": "^3.12.1",
+    "@types/node": "12.11.7",
+    "@types/react": "16.9.11",
+    "@types/react-dom": "16.9.3",
     "@rescripts/cli": "^0.0.13",
     "@rescripts/rescript-env": "^0.0.11",
     "@types/electron-json-storage": "^4.0.0",
     "@types/lodash": "^4.14.144",
     "concurrently": "^5.0.0",
-    "electron": "^7.0.0",
     "electron-builder": "^21.2.0",
+    "typescript": "3.6.4",
     "wait-on": "^3.3.0"
   }
 }
