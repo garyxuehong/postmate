@@ -1,6 +1,6 @@
 {
   "name": "postmate",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
@@ -12,7 +12,8 @@
     "dev": "concurrently \"BROWSER=none npm run js-start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "prebuild": "npm run js-build",
-    "build": "electron-builder -m"
+    "build": "electron-builder -m",
+    "publish": "electron-builder -p always"
   },
   "author": {
     "name": "Gary Xue",
@@ -32,7 +33,14 @@
     ],
     "directories": {
       "buildResources": "assets"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "garyxuehong",
+        "repo": "postmate"
+      }
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,6 +57,8 @@
     "body-parser": "^1.19.0",
     "electron-is-dev": "^1.1.0",
     "electron-json-storage": "^4.1.8",
+    "electron-log": "^3.0.8",
+    "electron-updater": "^4.2.0",
     "express": "^4.17.1",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",

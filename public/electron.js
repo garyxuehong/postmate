@@ -1,6 +1,5 @@
 const electron = require("electron");
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const log = require("electron-log");
 
 const https = require("https");
 const fs = require("fs");
@@ -8,8 +7,19 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 
 const express = require("express");
-const mockPostbackServer = express();
 const bodyParser = require("body-parser");
+
+const { autoUpdater } = require("electron-updater");
+log.transports.file.level = "debug";
+autoUpdater.logger = log;
+
+async function checkUpdate() {
+  const result = await autoUpdater.checkForUpdatesAndNotify();
+}
+
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const mockPostbackServer = express();
 
 let mockInfo = {};
 let mainWindow;
