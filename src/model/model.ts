@@ -43,6 +43,15 @@ export class ApiRequest {
   variablesExtract: VariablesExtract = {};
 }
 
+export class HttpRequest {
+  isHttps: boolean = true;
+  method: string = "GET";
+  url: string = "";
+  headers: Headers | null = {};
+  body: string = "";
+  cert: ApiCert | null | undefined = undefined;
+}
+
 export class VariablesExtract {
   [index: string]: string;
 }
