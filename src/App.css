@@ -62,3 +62,7 @@ body {
   text-decoration: underline;
   padding-bottom: 8px;
 }
+
+.font-red {
+  color: red !important;
+}

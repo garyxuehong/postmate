@@ -7,8 +7,9 @@ import { ApiEnvironment, Variables } from "../model/model";
 const VariablesPanel: React.FC<{
   environments: ApiEnvironment[];
   currVariables: Variables;
+  variablesOrigin: { [index: string]: string };
   onPickEnv: (env: ApiEnvironment) => void;
-}> = ({ environments, currVariables, onPickEnv }) => {
+}> = ({ environments, currVariables, variablesOrigin, onPickEnv }) => {
   return (
     <Segment raised>
       <Label color="blue" ribbon>
@@ -19,6 +20,9 @@ const VariablesPanel: React.FC<{
           {environments.map(env => (
             <Dropdown.Item
               key={env.name}
+              className={`${
+                env.name.toLowerCase().indexOf("prod") !== -1 ? "font-red" : ""
+              }`}
               text={env.name}
               onClick={() => {
                 onPickEnv(env);
@@ -30,7 +34,16 @@ const VariablesPanel: React.FC<{
       <Form className="variablesPanel">
         {Object.keys(currVariables).map(key => (
           <Form.Field key={key}>
-            <label>{key}</label>
+            <label
+              className={`${
+                (variablesOrigin[key] || "").toLowerCase().indexOf("prod") !==
+                -1
+                  ? "font-red"
+                  : ""
+              }`}
+            >
+              {key}
+            </label>
             <input value={currVariables[key]} readOnly />
           </Form.Field>
         ))}

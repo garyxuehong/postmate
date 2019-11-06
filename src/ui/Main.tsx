@@ -20,6 +20,7 @@ const Main: React.FC = () => {
     new ApiRequest()
   );
   const [currVariables, updateCurrentVariables] = useState<Variables>({});
+  const [variablesOrigin, updateVariableOrigin] = useState<{[index:string]:string}>({});
 
   useEffect(() => {
     const updateVars = (_: any, msg: Variables) => {
@@ -50,6 +51,11 @@ const Main: React.FC = () => {
 
   function onPickEnv(env: ApiEnvironment) {
     const allVariables: Variables = { ...currVariables, ...env.variables };
+    const envOrigin: { [index: string]: string } = {};
+    for (const key of Object.keys(env.variables)) {
+      envOrigin[key] = env.name;
+    }
+    updateVariableOrigin({ ...variablesOrigin, ...envOrigin });
     updateCurrentVariables(allVariables);
   }
 
@@ -94,6 +100,7 @@ const Main: React.FC = () => {
         <Grid.Column width={4}>
           <VariablesPanel
             currVariables={currVariables}
+            variablesOrigin={variablesOrigin}
             environments={doc.environments}
             onPickEnv={onPickEnv}
           />
