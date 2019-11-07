@@ -66,3 +66,11 @@ body {
 .font-red {
   color: red !important;
 }
+
+.startMockServer,
+.stopMockServer {
+  display:inline-block;
+  padding-top:4px !important;
+  color: gray !important;
+  cursor:pointer;
+}

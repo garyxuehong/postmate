@@ -1,13 +1,13 @@
 {
   "name": "postmate",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
   "description": "A rest api tool with git base yaml control",
   "scripts": {
-    "js-start": "rescripts start",
-    "js-build": "rescripts build",
+    "js-start": "REACT_APP_VERSION=$npm_package_version rescripts start",
+    "js-build": "REACT_APP_VERSION=$npm_package_version rescripts build",
     "test": "rescripts test --watchAll=false",
     "dev": "concurrently \"BROWSER=none npm run js-start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",

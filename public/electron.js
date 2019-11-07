@@ -1,5 +1,6 @@
 const electron = require("electron");
 const app = electron.app;
+const { ipcMain } = require('electron')
 const BrowserWindow = electron.BrowserWindow;
 
 const https = require("https");
@@ -8,9 +9,10 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 
 const express = require("express");
-const mockPostbackServer = express();
+const mockExpressApp = express();
 const bodyParser = require("body-parser");
 
+let mockNodeServer=null;
 let mockInfo = {};
 let mainWindow;
 
@@ -25,11 +27,11 @@ async function startMockServer() {
     )
   );
   return new Promise(resolve => {
-    mockPostbackServer.use(bodyParser.urlencoded({ extended: false }));
-    mockPostbackServer.use(bodyParser.json());
-    mockPostbackServer.use(bodyParser.text({ type: "text/html" }));
-    mockPostbackServer.get("/*", handlePostback);
-    mockPostbackServer.post("/*", handlePostback);
+    mockExpressApp.use(bodyParser.urlencoded({ extended: false }));
+    mockExpressApp.use(bodyParser.json());
+    mockExpressApp.use(bodyParser.text({ type: "text/html" }));
+    mockExpressApp.get("/*", handlePostback);
+    mockExpressApp.post("/*", handlePostback);
 
     function handlePostback(req, res) {
       console.log(req.body);
@@ -51,9 +53,9 @@ async function startMockServer() {
     }
 
     console.info(`now starting mock server...`);
-    const server = https.createServer({ key, cert }, mockPostbackServer);
-    server.listen(process.env.MOCK_CALLBACK_PORT || 8443, "0.0.0.0", () => {
-      const mockerServerPort = server.address().port;
+    mockNodeServer = https.createServer({ key, cert }, mockExpressApp);
+    mockNodeServer.listen(process.env.MOCK_CALLBACK_PORT || 8443, "0.0.0.0", () => {
+      const mockerServerPort = mockNodeServer.address().port;
       console.log(`mock server listen on ${mockerServerPort}`);
       resolve({
         MOCK_CALLBACK_PORT: mockerServerPort,
@@ -64,12 +66,11 @@ async function startMockServer() {
 }
 
 async function start() {
-  mockInfo = await startMockServer();
-
   function createWindow() {
     mainWindow = new BrowserWindow({
       width: 1200,
       height: 680,
+      title: `Postmate ${app.getVersion()}`,
       webPreferences: {
         nodeIntegration: true
       }
@@ -102,11 +103,6 @@ async function start() {
   app.on("activate", () => {
     if (mainWindow === null) {
       createWindow();
-    } else {
-      setTimeout(
-        () => mainWindow.webContents.send("newVariables", mockInfo),
-        3000
-      );
     }
   });
 
@@ -121,6 +117,27 @@ async function start() {
       }
     }
   );
+
+  ipcMain.on("startMockServer", async () => {
+    console.info(`starting mock server ...`);
+    mockInfo = await startMockServer();
+    mainWindow.webContents.send("newVariables", mockInfo);
+  });
+
+  ipcMain.on("stopMockServer", async () => {
+    console.info(`stopping mock server ...`);
+    mockNodeServer.close(err => {
+      if (err) console.error(err);
+      else {
+        console.info(`mock server stopped`);
+        mockInfo = {
+          MOCK_CALLBACK_PORT: "",
+          MOCK_CALLBACK_URL: ""
+        };
+        mainWindow.webContents.send("newVariables", mockInfo);
+      }
+    });
+  });
 }
 
 start();

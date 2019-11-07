@@ -9,7 +9,18 @@ const VariablesPanel: React.FC<{
   currVariables: Variables;
   variablesOrigin: { [index: string]: string };
   onPickEnv: (env: ApiEnvironment) => void;
-}> = ({ environments, currVariables, variablesOrigin, onPickEnv }) => {
+  isMockServerRuning: boolean;
+  onStartMockServer: () => void;
+  onStopMockServer: () => void;
+}> = ({
+  environments,
+  currVariables,
+  variablesOrigin,
+  isMockServerRuning,
+  onPickEnv,
+  onStartMockServer,
+  onStopMockServer
+}) => {
   return (
     <Segment raised>
       <Label color="blue" ribbon>
@@ -31,26 +42,40 @@ const VariablesPanel: React.FC<{
           ))}
         </Dropdown.Menu>
       </Dropdown>
+      {!isMockServerRuning ? (
+        // eslint-disable-next-line
+        <a className="startMockServer" onClick={onStartMockServer}>
+          Start a mock server at 8443
+        </a>
+      ) : (
+        // eslint-disable-next-line
+        <a className="stopMockServer" onClick={onStopMockServer}>
+          Stop a mock server
+        </a>
+      )}
       <Form className="variablesPanel">
-        {Object.keys(currVariables).map(key => (
-          <Form.Field key={key}>
-            <label>
-              {key}{" "}(
-              <span
-                className={`${
-                  (variablesOrigin[key] || "").toLowerCase().indexOf("prod") !==
-                  -1
-                    ? "font-red"
-                    : ""
-                }`}
-              >
-                {variablesOrigin[key]}
-              </span>
-              )
-            </label>
-            <input value={currVariables[key]} readOnly />
-          </Form.Field>
-        ))}
+        {Object.keys(currVariables).map(key =>
+          !currVariables[key] ? null : (
+            <Form.Field key={key}>
+              <label>
+                {key} (
+                <span
+                  className={`${
+                    (variablesOrigin[key] || "")
+                      .toLowerCase()
+                      .indexOf("prod") !== -1
+                      ? "font-red"
+                      : ""
+                  }`}
+                >
+                  {variablesOrigin[key]}
+                </span>
+                )
+              </label>
+              <input value={currVariables[key]} readOnly />
+            </Form.Field>
+          )
+        )}
       </Form>
     </Segment>
   );

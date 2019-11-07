@@ -21,6 +21,7 @@ const Main: React.FC = () => {
   );
   const [currVariables, updateCurrentVariables] = useState<Variables>({});
   const [variablesOrigin, updateVariableOrigin] = useState<{[index:string]:string}>({});
+  const isMockServerRuning = !!currVariables['MOCK_CALLBACK_PORT'];
 
   useEffect(() => {
     const updateVars = (_: any, msg: Variables) => {
@@ -64,6 +65,14 @@ const Main: React.FC = () => {
     updateCurrentVariables(allVariables);
   }
 
+  function onStartMockServer() {
+    ipcRenderer.send("startMockServer");
+  }
+
+  function onStopMockServer() {
+    ipcRenderer.send('stopMockServer');
+  }
+
   return (
     <Grid className="Main">
       <Grid.Row className="apiLocationRow">
@@ -103,6 +112,9 @@ const Main: React.FC = () => {
             variablesOrigin={variablesOrigin}
             environments={doc.environments}
             onPickEnv={onPickEnv}
+            isMockServerRuning={isMockServerRuning}
+            onStartMockServer={onStartMockServer}
+            onStopMockServer={onStopMockServer}
           />
         </Grid.Column>
       </Grid.Row>
