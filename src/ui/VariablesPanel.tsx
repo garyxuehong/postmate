@@ -34,15 +34,19 @@ const VariablesPanel: React.FC<{
       <Form className="variablesPanel">
         {Object.keys(currVariables).map(key => (
           <Form.Field key={key}>
-            <label
-              className={`${
-                (variablesOrigin[key] || "").toLowerCase().indexOf("prod") !==
-                -1
-                  ? "font-red"
-                  : ""
-              }`}
-            >
-              {key}
+            <label>
+              {key}{" "}(
+              <span
+                className={`${
+                  (variablesOrigin[key] || "").toLowerCase().indexOf("prod") !==
+                  -1
+                    ? "font-red"
+                    : ""
+                }`}
+              >
+                {variablesOrigin[key]}
+              </span>
+              )
             </label>
             <input value={currVariables[key]} readOnly />
           </Form.Field>
