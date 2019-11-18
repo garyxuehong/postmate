@@ -1,3 +1,4 @@
+import { ipcRenderer } from "electron";
 import React, { useState, useEffect, useRef } from "react";
 import {
   ApiRequest,
@@ -40,6 +41,12 @@ export default function RequestOperationPanel({
     setResponse(resp === undefined ? new RequestSendResponse() : resp);
     // eslint-disable-next-line
   }, [request]);
+  useEffect(() => {
+    ipcRenderer.on("fireRequest", trySendApiRequest);
+    return () => {
+      ipcRenderer.off("fireRequest", trySendApiRequest);
+    };
+  }, [trySendApiRequest]);
   async function fireRequest(httpRequest: HttpRequest) {
     try {
       updateIsSending(true);
@@ -60,12 +67,12 @@ export default function RequestOperationPanel({
       updateIsSending(false);
     }
   }
-  function cancelSend() {
+  function dismissCertPhraseDialog() {
     updateIsAskingForPassphrase(false);
   }
-  async function confirmSend() {
+  async function saveCertPassphraseAndSend() {
     try {
-      updateIsAskingForPassphrase(false);
+      dismissCertPhraseDialog();
       const httpRequest = parseRequest(tempRequest, variables, certs);
       const passphrase = ((passphraseRef.current as any) as HTMLInputElement)
         .value;
@@ -74,7 +81,23 @@ export default function RequestOperationPanel({
         httpRequest.cert.passphrase = passphrase;
       }
       await fireRequest(httpRequest);
-    } catch (_) {}
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  async function trySendApiRequest() {
+    setResponse(new RequestSendResponse());
+    const httpRequest = parseRequest(tempRequest, variables, certs);
+    if (httpRequest.cert && !httpRequest.cert.passphrase) {
+      const cachedPassphrase = TEMP_CACHE_PASSPHRASE[httpRequest.cert.domain];
+      if (cachedPassphrase) {
+        await fireRequest(httpRequest);
+      } else {
+        updateIsAskingForPassphrase(true);
+      }
+    } else {
+      await fireRequest(httpRequest);
+    }
   }
   return (
     <div>
@@ -104,7 +127,7 @@ export default function RequestOperationPanel({
           />
           <p>
             <br />
-            <Modal open={isAskingForPassphrase} onClose={cancelSend}>
+            <Modal open={isAskingForPassphrase} onClose={dismissCertPhraseDialog}>
               <Header icon="key" content="Passphrase" />
               <Modal.Content>
                 <div>
@@ -113,7 +136,7 @@ export default function RequestOperationPanel({
                 </div>
               </Modal.Content>
               <Modal.Actions>
-                <Button color="green" onClick={confirmSend}>
+                <Button color="green" onClick={saveCertPassphraseAndSend}>
                   <Icon name="checkmark" /> Ok
                 </Button>
               </Modal.Actions>
@@ -121,21 +144,7 @@ export default function RequestOperationPanel({
             <Button
               color="green"
               loading={isSending}
-              onClick={async () => {
-                setResponse(new RequestSendResponse());
-                const httpRequest = parseRequest(tempRequest, variables, certs);
-                if (httpRequest.cert && !httpRequest.cert.passphrase) {
-                  const cachedPassphrase =
-                    TEMP_CACHE_PASSPHRASE[httpRequest.cert.domain];
-                  if (cachedPassphrase) {
-                    await fireRequest(httpRequest);
-                  } else {
-                    updateIsAskingForPassphrase(true);
-                  }
-                } else {
-                  await fireRequest(httpRequest);
-                }
-              }}
+              onClick={trySendApiRequest}
             >
               <Icon name="send" />
               Send

@@ -1,5 +1,6 @@
 const electron = require("electron");
 const app = electron.app;
+const globalShortcut = electron.globalShortcut;
 const { ipcMain } = require('electron')
 const BrowserWindow = electron.BrowserWindow;
 
@@ -90,6 +91,9 @@ async function start() {
       () => mainWindow.webContents.send("newVariables", mockInfo),
       3000
     );
+    globalShortcut.register('Command+Enter', ()=>{
+      mainWindow.webContents.send('fireRequest');
+    });
   }
 
   app.on("ready", createWindow);
