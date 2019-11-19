@@ -5,10 +5,12 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export default function ApiLocation({
   location,
-  onSync
+  onSync,
+  onOpen
 }: {
   location: string | null;
   onSync: (location: string) => void;
+  onOpen: (location: string) => void;
 }) {
   const openSample = () => {};
   const [tempLocation, updateTempLocation] = useState(location);
@@ -53,6 +55,16 @@ export default function ApiLocation({
           }}
         >
           Sync
+        </Form.Button>
+        <Form.Button
+          className="btn-open"
+          color="black"
+          width={2}
+          onClick={async () => {
+            if (tempLocation !== null) onOpen(tempLocation);
+          }}
+        >
+          Edit
         </Form.Button>
       </Form.Group>
     </Form>

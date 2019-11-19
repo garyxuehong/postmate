@@ -20,6 +20,10 @@ body {
   width: 100%;
 }
 
+.btn-open button {
+  width: 100%;
+}
+
 .apiRequestGroup {
   margin-top: 20px;
 }

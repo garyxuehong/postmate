@@ -1,12 +1,13 @@
 const electron = require("electron");
 const app = electron.app;
 const globalShortcut = electron.globalShortcut;
+const shell = electron.shell;
 const { ipcMain } = require('electron')
 const BrowserWindow = electron.BrowserWindow;
 
 const https = require("https");
+const path = require('path');
 const fs = require("fs");
-const path = require("path");
 const isDev = require("electron-is-dev");
 
 const express = require("express");
@@ -93,6 +94,9 @@ async function start() {
     );
     globalShortcut.register('Command+Enter', ()=>{
       mainWindow.webContents.send('fireRequest');
+    });
+    ipcMain.on('openFile', (_, file)=>{
+      shell.openItem(path.resolve(file));
     });
   }
 

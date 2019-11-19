@@ -1,5 +1,5 @@
 import { ipcRenderer } from "electron";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   ApiRequest,
   HttpRequest,
@@ -35,19 +35,7 @@ export default function RequestOperationPanel({
   const [isSending, updateIsSending] = useState(false);
   const [isAskingForPassphrase, updateIsAskingForPassphrase] = useState(false);
   const passphraseRef = useRef(null);
-  useEffect(() => {
-    updateTempRequest(request);
-    const resp = reqRespMap[request.name];
-    setResponse(resp === undefined ? new RequestSendResponse() : resp);
-    // eslint-disable-next-line
-  }, [request]);
-  useEffect(() => {
-    ipcRenderer.on("fireRequest", trySendApiRequest);
-    return () => {
-      ipcRenderer.off("fireRequest", trySendApiRequest);
-    };
-  }, [trySendApiRequest]);
-  async function fireRequest(httpRequest: HttpRequest) {
+  const fireRequest = useCallback(async (httpRequest: HttpRequest) => {
     try {
       updateIsSending(true);
       const resp = await sendRequest(httpRequest);
@@ -66,7 +54,32 @@ export default function RequestOperationPanel({
     } finally {
       updateIsSending(false);
     }
-  }
+  }, [onExtractVariable, reqRespMap, request.variablesExtract, tempRequest.name]);
+  const trySendApiRequest = useCallback(async () => {
+    setResponse(new RequestSendResponse());
+    const httpRequest = parseRequest(tempRequest, variables, certs);
+    if (httpRequest.cert && !httpRequest.cert.passphrase) {
+      const cachedPassphrase = TEMP_CACHE_PASSPHRASE[httpRequest.cert.domain];
+      if (cachedPassphrase) {
+        await fireRequest(httpRequest);
+      } else {
+        updateIsAskingForPassphrase(true);
+      }
+    } else {
+      await fireRequest(httpRequest);
+    }
+  }, [tempRequest, variables, certs, fireRequest]);
+  useEffect(() => {
+    updateTempRequest(request);
+    const resp = reqRespMap[request.name];
+    setResponse(resp === undefined ? new RequestSendResponse() : resp);
+  }, [request, reqRespMap]);
+  useEffect(() => {
+    ipcRenderer.on("fireRequest", trySendApiRequest);
+    return () => {
+      ipcRenderer.off("fireRequest", trySendApiRequest);
+    };
+  }, [trySendApiRequest]);
   function dismissCertPhraseDialog() {
     updateIsAskingForPassphrase(false);
   }
@@ -83,20 +96,6 @@ export default function RequestOperationPanel({
       await fireRequest(httpRequest);
     } catch (e) {
       console.error(e);
-    }
-  }
-  async function trySendApiRequest() {
-    setResponse(new RequestSendResponse());
-    const httpRequest = parseRequest(tempRequest, variables, certs);
-    if (httpRequest.cert && !httpRequest.cert.passphrase) {
-      const cachedPassphrase = TEMP_CACHE_PASSPHRASE[httpRequest.cert.domain];
-      if (cachedPassphrase) {
-        await fireRequest(httpRequest);
-      } else {
-        updateIsAskingForPassphrase(true);
-      }
-    } else {
-      await fireRequest(httpRequest);
     }
   }
   return (

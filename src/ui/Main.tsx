@@ -91,6 +91,9 @@ const Main: React.FC = () => {
                 alert(`Load failed: ${location}`);
               }
             }}
+            onOpen={location => {
+              ipcRenderer.send("openFile", location);
+            }}
           />
         </Grid.Column>
       </Grid.Row>
