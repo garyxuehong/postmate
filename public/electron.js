@@ -1,9 +1,10 @@
 const electron = require("electron");
+const { Menu, MenuItem } = electron;
 const app = electron.app;
-const globalShortcut = electron.globalShortcut;
 const shell = electron.shell;
 const { ipcMain } = require('electron')
 const BrowserWindow = electron.BrowserWindow;
+const { getTemplate } = require('./menu');
 
 const https = require("https");
 const path = require('path');
@@ -17,6 +18,14 @@ const bodyParser = require("body-parser");
 let mockNodeServer=null;
 let mockInfo = {};
 let mainWindow;
+
+const menuTemplate = getTemplate({
+  onFireRequest: () => {
+    mainWindow && mainWindow.webContents.send("fireRequest");
+  }
+});
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
 
 async function startMockServer() {
   const key = fs.readFileSync(
@@ -92,9 +101,7 @@ async function start() {
       () => mainWindow.webContents.send("newVariables", mockInfo),
       3000
     );
-    globalShortcut.register('Command+Enter', ()=>{
-      mainWindow.webContents.send('fireRequest');
-    });
+    
     ipcMain.on('openFile', (_, file)=>{
       shell.openItem(path.resolve(file));
     });
