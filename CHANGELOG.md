@@ -1,6 +1,7 @@
 # CHANGELOG.md
 
-## v1.2.2 (2019-12-11)
+## v1.2.3 (2019-12-11)
+### Bugfix: fix fire request shortcut
 ### Bugfix: fix request refresh unnecesary
 ### Feature: Support editable variables
 
