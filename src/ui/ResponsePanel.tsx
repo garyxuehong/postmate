@@ -28,7 +28,7 @@ const ResponsePanel: React.FC<{ response: RequestSendResponse | null }> = ({
       </Form.Field>
       <Form.Field>
         <label>Body</label>
-        <textarea value={body} readOnly />
+        <textarea value={body} readOnly rows={50} />
       </Form.Field>
     </Form>
   );

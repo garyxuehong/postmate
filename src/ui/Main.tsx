@@ -73,6 +73,10 @@ const Main: React.FC = () => {
     ipcRenderer.send('stopMockServer');
   }
 
+  function onUpdateVariables(newVar: Variables) {
+    updateCurrentVariables({ ...currVariables, ...newVar });
+  }
+
   return (
     <Grid className="Main">
       <Grid.Row className="apiLocationRow">
@@ -118,6 +122,7 @@ const Main: React.FC = () => {
             isMockServerRuning={isMockServerRuning}
             onStartMockServer={onStartMockServer}
             onStopMockServer={onStopMockServer}
+            onUpdateVariables={onUpdateVariables}
           />
         </Grid.Column>
       </Grid.Row>

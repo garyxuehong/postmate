@@ -12,6 +12,7 @@ const VariablesPanel: React.FC<{
   isMockServerRuning: boolean;
   onStartMockServer: () => void;
   onStopMockServer: () => void;
+  onUpdateVariables: (newVar: Variables) => void;
 }> = ({
   environments,
   currVariables,
@@ -19,7 +20,8 @@ const VariablesPanel: React.FC<{
   isMockServerRuning,
   onPickEnv,
   onStartMockServer,
-  onStopMockServer
+  onStopMockServer,
+  onUpdateVariables
 }) => {
   return (
     <Segment raised>
@@ -72,7 +74,14 @@ const VariablesPanel: React.FC<{
                 </span>
                 )
               </label>
-              <input value={currVariables[key]} readOnly />
+              <input
+                value={currVariables[key]}
+                onChange={e => {
+                  const newVar: Variables = {};
+                  newVar[key] = e.currentTarget.value;
+                  onUpdateVariables(newVar);
+                }}
+              />
             </Form.Field>
           )
         )}

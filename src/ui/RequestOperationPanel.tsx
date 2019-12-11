@@ -71,9 +71,11 @@ export default function RequestOperationPanel({
   }, [tempRequest, variables, certs, fireRequest]);
   useEffect(() => {
     updateTempRequest(request);
+  }, [request]);
+  useEffect(() => {
     const resp = reqRespMap[request.name];
     setResponse(resp === undefined ? new RequestSendResponse() : resp);
-  }, [request, reqRespMap]);
+  }, [request.name, reqRespMap]);
   useEffect(() => {
     ipcRenderer.on("fireRequest", trySendApiRequest);
     return () => {
