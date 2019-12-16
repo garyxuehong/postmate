@@ -1,5 +1,8 @@
 # CHANGELOG.md
 
+## v1.2.4 (2019-12-16)
+### Bugfix: fix edit menu missing
+
 ## v1.2.3 (2019-12-11)
 ### Bugfix: fix fire request shortcut
 ### Bugfix: fix request refresh unnecesary
