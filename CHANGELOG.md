@@ -1,5 +1,8 @@
 # CHANGELOG.md
 
+## v1.3.0 (2020-02-13)
+### Feature: Add octet/stream upload
+
 ## v1.2.4 (2019-12-16)
 ### Bugfix: fix edit menu missing
 

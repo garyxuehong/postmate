@@ -18,6 +18,7 @@ export default function parse(
   if (body !== "") {
     body = varReplace(body, variables);
   }
+  let bodyBuffer = request.bodyBuffer;
   const method = varReplace(request.method, variables);
   const headers = varHeaderReplace(request.headers || {}, variables);
   return {
@@ -25,6 +26,7 @@ export default function parse(
     method,
     url,
     body,
+    bodyBuffer,
     headers,
     cert
   };

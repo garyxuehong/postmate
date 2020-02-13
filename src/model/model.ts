@@ -40,6 +40,7 @@ export class ApiRequest {
   url: string = "";
   headers: Headers | null = {};
   body: string = "";
+  bodyBuffer: Buffer | null = null;
   variablesExtract: VariablesExtract = {};
 }
 
@@ -49,6 +50,7 @@ export class HttpRequest {
   url: string = "";
   headers: Headers | null = {};
   body: string = "";
+  bodyBuffer: Buffer | null = null;
   cert: ApiCert | null | undefined = undefined;
 }
 

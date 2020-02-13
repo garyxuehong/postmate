@@ -125,6 +125,9 @@ export default function RequestOperationPanel({
             onBodyChange={body => {
               updateTempRequest({ ...tempRequest, body });
             }}
+            onBodyBufferChange={bodyBuffer => {
+              updateTempRequest({ ...tempRequest, bodyBuffer });
+            }}
           />
           <p>
             <br />

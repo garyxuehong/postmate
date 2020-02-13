@@ -73,6 +73,7 @@ export default function RequestList({
                         key={req.name}
                         onClick={() => {
                           updateLastClicked(req.name);
+                          if(req.bodyBuffer) req.bodyBuffer = null;
                           onActivateRequest(req);
                         }}
                       >

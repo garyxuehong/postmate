@@ -27,7 +27,9 @@ export default async function send(
       method: request.method,
       headers: {
         ...request.headers,
-        'content-length': request.body.length //TODO deal with unicode
+        "content-length": request.bodyBuffer
+          ? request.bodyBuffer.length
+          : request.body.length //TODO deal with unicode
       },
       ...certOption
     };
@@ -54,7 +56,7 @@ export default async function send(
     newRequest.on("error", e => {
       reject(e);
     });
-    newRequest.write(request.body, err => {
+    newRequest.write(request.bodyBuffer || request.body, err => {
       if (err) reject(err);
       newRequest.end();
     });

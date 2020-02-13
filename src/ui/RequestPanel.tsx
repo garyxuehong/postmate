@@ -2,19 +2,31 @@ import React from "react";
 import { ApiRequest } from "../model/model";
 import { Form } from "semantic-ui-react";
 
+import fs from 'fs';
+
 const RequestPanel: React.FC<{
   request: ApiRequest;
   onMethodChange: (value: string) => void;
   onUrlChange: (value: string) => void;
   onHeadersChange: (key: string, value: string) => void;
-  onBodyChange: (value: string) => void;
+  onBodyChange: (value: string ) => void;
+  onBodyBufferChange: (value: Buffer) => void;
 }> = ({
   request,
   onMethodChange,
   onUrlChange,
   onHeadersChange,
-  onBodyChange
+  onBodyChange,
+  onBodyBufferChange
 }) => {
+  const headers = request.headers || {};
+  const isFileUpload =
+    (
+      headers["content-type"] ||
+      headers["Content-Type"] ||
+      headers["CONTENT-TYPE"] ||
+      ""
+    ).toLowerCase() === "application/octet-stream";
   return (
     <Form>
       <Form.Field>
@@ -42,10 +54,25 @@ const RequestPanel: React.FC<{
       ))}
       <Form.Field>
         <label>Body</label>
-        <textarea
-          value={request.body}
-          onChange={e => onBodyChange(e.target.value)}
-        />
+        {isFileUpload ? (
+          <input
+            type="file"
+            onChange={async e => {
+              if (e.target.files && e.target.files.length > 0) {
+                const file = e.target.files[0];
+                if (file) {
+                  const fileContent = await fs.promises.readFile(file.path);
+                  onBodyBufferChange(fileContent);
+                }
+              }
+            }}
+          />
+        ) : (
+          <textarea
+            value={request.body}
+            onChange={e => onBodyChange(e.target.value)}
+          />
+        )}
       </Form.Field>
     </Form>
   );
