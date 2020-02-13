@@ -4,8 +4,9 @@ This project is inspired by Postman.
 
 1. Yaml base api request. Easy to put in git and keep version and share with teams.
 2. Multiple environments, allow use case of mix and match envs.
-3. (WIP) Extract data from response for easy api chaining
+3. Extract data from response for easy api chaining
 4. Open api as browser url internally.
+5. Support mutual SSL certificates
 
 # Local Dev
 
