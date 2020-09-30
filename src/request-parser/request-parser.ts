@@ -58,6 +58,9 @@ function replaceStrWithVariables(str: string, variables: Variables) {
 }
 
 function replaceStrWithAll(str: string, key: string, value: string) {
+  const regexEncode = new RegExp("\\${encode:" + key + "}", "g");
+  str = str.replace(regexEncode, encodeURIComponent(value));
   const regex = new RegExp("\\${" + key + "}", "g");
-  return str.replace(regex, value);
+  str = str.replace(regex, value);
+  return str;
 }
