@@ -1,5 +1,5 @@
 const electron = require("electron");
-const { Menu, MenuItem } = electron;
+const { Menu, MenuItem, Notification } = electron;
 const app = electron.app;
 const shell = electron.shell;
 const { ipcMain } = require('electron')
@@ -105,6 +105,8 @@ async function start() {
     ipcMain.on('openFile', (_, file)=>{
       shell.openItem(path.resolve(file));
     });
+
+
   }
 
   app.on("ready", createWindow);
@@ -152,6 +154,15 @@ async function start() {
         mainWindow.webContents.send("newVariables", mockInfo);
       }
     });
+  });
+
+  ipcMain.on('copied', async () => {
+    const n = new Notification({
+      title: 'Clipboard',
+      body: 'copied'
+    });
+    n.show();
+    setTimeout(()=>n.close(), 1000);
   });
 }
 

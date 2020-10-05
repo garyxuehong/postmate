@@ -8,15 +8,19 @@ const RequestPanel: React.FC<{
   request: ApiRequest;
   onMethodChange: (value: string) => void;
   onUrlChange: (value: string) => void;
+  onUrlEval: () => void;
   onHeadersChange: (key: string, value: string) => void;
   onBodyChange: (value: string ) => void;
+  onBodyEval: () => void;
   onBodyBufferChange: (value: Buffer) => void;
 }> = ({
   request,
   onMethodChange,
   onUrlChange,
+  onUrlEval,
   onHeadersChange,
   onBodyChange,
+  onBodyEval,
   onBodyBufferChange
 }) => {
   const headers = request.headers || {};
@@ -33,22 +37,25 @@ const RequestPanel: React.FC<{
         <label>Method</label>
         <input
           value={request.method}
-          onChange={e => onMethodChange(e.target.value)}
+          onChange={(e) => onMethodChange(e.target.value)}
         />
       </Form.Field>
       <Form.Field>
         <label>Url</label>
         <input
           value={request.url}
-          onChange={e => onUrlChange(e.target.value)}
+          onChange={(e) => onUrlChange(e.target.value)}
         />
+        <a className="eval-link" onClick={onUrlEval}>
+          eval and copy
+        </a>
       </Form.Field>
       {Object.entries(request.headers || {}).map(([key, value]) => (
         <Form.Field key={key}>
           <label>{key}</label>
           <input
             value={value}
-            onChange={e => onHeadersChange(key, e.target.value)}
+            onChange={(e) => onHeadersChange(key, e.target.value)}
           />
         </Form.Field>
       ))}
@@ -57,7 +64,7 @@ const RequestPanel: React.FC<{
         {isFileUpload ? (
           <input
             type="file"
-            onChange={async e => {
+            onChange={async (e) => {
               if (e.target.files && e.target.files.length > 0) {
                 const file = e.target.files[0];
                 if (file) {
@@ -68,10 +75,15 @@ const RequestPanel: React.FC<{
             }}
           />
         ) : (
-          <textarea
-            value={request.body}
-            onChange={e => onBodyChange(e.target.value)}
-          />
+          <>
+            <textarea
+              value={request.body}
+              onChange={(e) => onBodyChange(e.target.value)}
+            />
+            <a className="eval-link" onClick={onBodyEval}>
+              eval and copy
+            </a>
+          </>
         )}
       </Form.Field>
     </Form>

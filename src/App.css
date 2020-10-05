@@ -78,3 +78,8 @@ body {
   color: gray !important;
   cursor:pointer;
 }
+
+.eval-link {
+  float: right;
+  cursor: pointer;
+}

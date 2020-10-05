@@ -1,5 +1,9 @@
 # CHANGELOG.md
 
+## v1.3.1 (2020-10-05)
+### Feature: Add encodeURIComponent
+### Feature: Add eval and copy to clipboard
+
 ## v1.3.0 (2020-02-13)
 ### Feature: Add octet/stream upload
 

@@ -1,4 +1,4 @@
-import { ipcRenderer } from "electron";
+import { ipcRenderer, clipboard } from "electron";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   ApiRequest,
@@ -100,6 +100,20 @@ export default function RequestOperationPanel({
       console.error(e);
     }
   }
+  function evalAndCopyUrl() {
+    const { url } = parseRequest(tempRequest, variables, certs);
+    if (url) {
+      clipboard.writeText(url);
+      ipcRenderer.send('copied');
+    }
+  }
+  function evalAndCopyBody() {
+    const { body } = parseRequest(tempRequest, variables, certs);
+    if (body) {
+      clipboard.writeText(body);
+      ipcRenderer.send('copied');
+    }
+  }
   return (
     <div>
       <Segment raised>
@@ -116,6 +130,7 @@ export default function RequestOperationPanel({
             onUrlChange={url => {
               updateTempRequest({ ...tempRequest, url });
             }}
+            onUrlEval={evalAndCopyUrl}
             onHeadersChange={(key, value) => {
               updateTempRequest({
                 ...tempRequest,
@@ -124,6 +139,8 @@ export default function RequestOperationPanel({
             }}
             onBodyChange={body => {
               updateTempRequest({ ...tempRequest, body });
+            }}
+            onBodyEval={()=>{
             }}
             onBodyBufferChange={bodyBuffer => {
               updateTempRequest({ ...tempRequest, bodyBuffer });
