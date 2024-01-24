@@ -16,7 +16,7 @@ function getColor(method: string) {
     return "grey";
   }
   method = method.toUpperCase();
-  if (method === "GET") return "green";
+  if (method === "GET") return "black";
   if (method === "POST") return "orange";
   if (method === "PUT") return "orange";
   if (method === "PATCH") return "orange";
