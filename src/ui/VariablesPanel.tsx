@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 
 import { Dropdown, Form, Segment, Label } from "semantic-ui-react";
 
@@ -23,12 +23,18 @@ const VariablesPanel: React.FC<{
   onStopMockServer,
   onUpdateVariables
 }) => {
+  const [selectedEnv, setSelectedEnv] = useState(environments.length > 0 ? environments[0].name : '');
+  useEffect(() => {
+    if (environments.length > 0) {
+      setSelectedEnv(environments[0].name);
+    }
+  }, [environments]);
   return (
     <Segment raised>
       <Label color="blue" ribbon>
         Environments
       </Label>
-      <Dropdown text="select" className="envDropdown">
+      <Dropdown text="select" value={selectedEnv} className="envDropdown">
         <Dropdown.Menu>
           {environments.map(env => (
             <Dropdown.Item
@@ -39,6 +45,7 @@ const VariablesPanel: React.FC<{
               text={env.name}
               onClick={() => {
                 onPickEnv(env);
+                setSelectedEnv(env.name);
               }}
             />
           ))}
